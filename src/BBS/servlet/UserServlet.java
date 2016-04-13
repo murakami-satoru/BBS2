@@ -49,12 +49,12 @@ public class UserServlet extends BBSServlet{
 
 		if(!violationMessages.isEmpty()){
 			request.setAttribute("violationMessages", violationMessages);
+			request.setAttribute("inputUsers", usersBean);
+			request.getRequestDispatcher("registerUser.jsp").forward(request, response);
+		}else{
+			new UserService().register(usersBean);
+			request.getRequestDispatcher("managementUser.jsp").forward(request, response);
 		}
-
-		new UserService().register(usersBean);
-
-		request.getRequestDispatcher("managementUser.jsp").forward(request, response);
-
 	}
 
 	private RegisterUserForm toRegisterUserForm(Users usersBean){

@@ -23,11 +23,21 @@
 		<table>
 			<tr>
 				<td align="right">ログインID:</td>
-				<td><input type="text" name="login_id"  size="20" maxlength="20"></td>
+				<td>
+					<input type="text" name="login_id"  size="20" maxlength="20">
+					<c:forEach items="${ violationMessages[loginId] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
 			</tr>
 			<tr>
 				<td align="right">パスワード:</td>
-				<td><input type="password" name="password"  size="20" maxlength="255"></td>
+				<td>
+					<input type="password" name="password"  size="20" maxlength="255">
+					<c:forEach items="${ violationMessages[password] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="ログイン"></td>
