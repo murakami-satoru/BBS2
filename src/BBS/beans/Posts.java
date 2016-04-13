@@ -1,6 +1,8 @@
 package BBS.beans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Posts {
 
@@ -8,9 +10,12 @@ public class Posts {
 	private String _title;
 	private String _text;
 	private String _category;
-	private int _userID;
+	private int _userId;
+	private String _userName;
 	private Date _createdDate;
 	private Date _updatedDate;
+	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 hh:mm:ss");
+	private List<Comments> _comments;
 
 	//Posts.idのセッター・ゲッター
 	public void setId(int id){
@@ -44,11 +49,11 @@ public class Posts {
 	}
 
 	//Posts.user_idのセッター・ゲッター
-	public void setUserId(int userID){
-		_userID = userID;
+	public void setUserId(int userId){
+		_userId = userId;
 	}
 	public int getUserId(){
-		return _userID;
+		return _userId;
 	}
 
 	//Posts.created_dateのセッター・ゲッター
@@ -57,6 +62,9 @@ public class Posts {
 	}
 	public Date getCreatedDate(){
 		return _createdDate;
+	}
+	public String getCreatedDateString(){
+		return _dateFormat.format(_createdDate);
 	}
 
 	//Posts.updated_dateのセッター・ゲッター
@@ -67,4 +75,19 @@ public class Posts {
 		return _updatedDate;
 	}
 
+	//user_idに紐づくUsers.nameのセッター・ゲッター
+	public void setUserName(String userName){
+		_userName = userName;
+	}
+	public String getUserName(){
+		return _userName;
+	}
+
+	//Posts.idに紐づくCommentsのセッター・ゲッター
+	public void setComments(List<Comments> comments){
+		_comments = comments;
+	}
+	public List<Comments> getComments(){
+		return _comments;
+	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,7 +14,7 @@ import BBS.beans.Users;
 import BBS.service.LoginService;
 
 @WebServlet(urlPatterns= { "/login" })
-public class LoginServlet extends HttpServlet{
+public class LoginServlet extends VaildatorServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
@@ -27,12 +26,12 @@ public class LoginServlet extends HttpServlet{
 		String password = request.getParameter("password");
 
 		LoginService loginService = new LoginService();
-		Users user = loginService.login(loginId, password);
+		Users usersBean = loginService.login(loginId, password);
 
 		HttpSession session = request.getSession();
-		if(user != null){
-			session.setAttribute("loginUser", user);
-			response.sendRedirect("home.jsp");
+		if(usersBean != null){
+			session.setAttribute("loginUser", usersBean);
+			response.sendRedirect("home");
 		}else{
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインに失敗しました");
@@ -40,4 +39,5 @@ public class LoginServlet extends HttpServlet{
 			response.sendRedirect("login");
 		}
 	}
+
 }

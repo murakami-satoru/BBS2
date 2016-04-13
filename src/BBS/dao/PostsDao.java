@@ -17,7 +17,7 @@ public class PostsDao {
 				  + "title ,"
 				  + "text ,"
 				  + "category ,"
-				  + "post_id ,"
+				  + "user_id ,"
 				  + "created_date ,"
 				  + "updated_date "
 				  + " ) values ( "
@@ -44,9 +44,9 @@ public class PostsDao {
 
 	public List<Posts> select(Connection connection){
 		List<Posts> posts = new ArrayList<Posts>();
-		String sql = "select * from posts order by id";
+		String sql = "select * from view_posts order by id";
 		try(ResultSet results = connection.prepareStatement(sql).executeQuery();){
-			posts = toPostsList(results);
+			posts = toPostsList(results,connection);
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -54,8 +54,9 @@ public class PostsDao {
 		return posts;
 	}
 
-	public List<Posts> toPostsList(ResultSet results){
+	public List<Posts> toPostsList(ResultSet results,Connection connection){
 		List<Posts> posts = new ArrayList<Posts>();
+		CommentsDao commentsDao = new CommentsDao();
 		try{
 			while(results.next()){
 				Posts postsBean = new Posts();
@@ -63,9 +64,10 @@ public class PostsDao {
 				postsBean.setTitle(results.getString("title"));
 				postsBean.setText(results.getString("text"));
 				postsBean.setCategory(results.getString("category"));
-				postsBean.setUserId(results.getInt("post_id"));
+				postsBean.setUserName(results.getString("user_name"));
 				postsBean.setCreatedDate(results.getDate("created_date"));
 				postsBean.setUpdatedDate(results.getDate("updated_date"));
+				postsBean.setComments(commentsDao.select(connection, postsBean.getId()));
 
 				posts.add(postsBean);
 			}

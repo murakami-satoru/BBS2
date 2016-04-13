@@ -55,3 +55,5 @@ insert into departments (name) values ('Ğˆõ');
 
 insert into users (login_id,password,name,branch_id,department_id) 
 			values ('admin','admin','Œf¦”ÂŠÇ—Ò',1,1);
+
+commit;

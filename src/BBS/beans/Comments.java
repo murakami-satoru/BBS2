@@ -1,5 +1,6 @@
 package BBS.beans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Comments {
@@ -7,9 +8,11 @@ public class Comments {
 	private int _id;
 	private String _text;
 	private int _userId;
+	private String _userName;
 	private int _postId;
 	private Date _createdDate;
 	private Date _updatedDate;
+	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 hh:mm:ss");
 
 	//Comments.idのセッター・ゲッター
 	public void setId(int id){
@@ -49,6 +52,17 @@ public class Comments {
 	}
 	public Date getCreatedDate(){
 		return _createdDate;
+	}
+	public String getCreatedDateString(){
+		return _dateFormat.format(_createdDate);
+	}
+
+	//user_idに紐づくUsers.nameのセッター・ゲッター
+	public void setUserName(String userName){
+		_userName = userName;
+	}
+	public String getUserName(){
+		return _userName;
 	}
 
 	//Comments.updated_dateのセッター・ゲッター

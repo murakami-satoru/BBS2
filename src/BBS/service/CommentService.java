@@ -2,19 +2,17 @@ package BBS.service;
 
 import java.sql.Connection;
 
-import BBS.beans.Users;
-import BBS.dao.UsersDao;
-import BBS.utils.CipherUtil;
+import BBS.beans.Comments;
+import BBS.dao.CommentsDao;
 import BBS.utils.DBUtil;
 
-public class UserService {
+public class CommentService {
 
-	public void register(Users usersBean){
+	public void register(Comments commentsBean){
 		Connection connection = DBUtil.getConnection();
-		UsersDao usersDao = new UsersDao();
+		CommentsDao commentsDao = new CommentsDao();
 		try{
-			usersBean.setPassword( CipherUtil.encrypt(usersBean.getPassword()));
-			usersDao.insert(connection, usersBean);
+			commentsDao.insert(connection, commentsBean);
 			DBUtil.commit(connection);
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);
@@ -23,5 +21,4 @@ public class UserService {
 			DBUtil.close(connection);
 		}
 	}
-
 }

@@ -11,12 +11,9 @@ public class LoginService {
 
 	public Users login(String loginId,String password){
 		Connection connection = DBUtil.getConnection();
-		UsersDao usersDao = new UsersDao();
 		try{
-			Users users = usersDao.getUsers(connection, loginId, CipherUtil.encrypt(password));
-
-			DBUtil.commit(connection);
-			return users;
+//			return new UsersDao().getUsers(connection, loginId, password);
+			return new UsersDao().getUsers(connection, loginId, CipherUtil.encrypt(password));
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);
 			throw e;
