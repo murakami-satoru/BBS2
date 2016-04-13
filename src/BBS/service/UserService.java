@@ -24,4 +24,17 @@ public class UserService {
 		}
 	}
 
+	public Users login(String loginId,String password){
+		Connection connection = DBUtil.getConnection();
+		try{
+//			return new UsersDao().getUsers(connection, loginId, password);
+			return new UsersDao().getUsers(connection, loginId, CipherUtil.encrypt(password));
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+	}
+
 }

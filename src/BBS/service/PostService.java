@@ -23,7 +23,7 @@ public class PostService {
 			DBUtil.close(connection);
 		}
 	}
-	public List<Posts> select(){
+	public List<Posts> getPosts(){
 		Connection connection = DBUtil.getConnection();
 		PostsDao postsDao = new PostsDao();
 		List<Posts> posts = new ArrayList<Posts>();

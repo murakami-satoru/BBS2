@@ -3,7 +3,7 @@ package BBS.validation;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RegisterPostForm implements Form {
+public class RegisterPostForm implements MyForm {
 
 	@NotNull(message = REQUIRED_ERROR)
 	@Size(min = 1, max=50, message = "1～50" + OVER_SIZE_ERROR)

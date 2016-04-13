@@ -13,7 +13,7 @@ import BBS.beans.Users;
 import BBS.service.CommentService;
 
 @WebServlet(urlPatterns= { "/registerComment" })
-public class CommentServlet extends VaildatorServlet{
+public class CommentServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{

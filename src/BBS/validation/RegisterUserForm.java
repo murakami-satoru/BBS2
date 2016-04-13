@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class RegisterUserForm implements Form {
+public class RegisterUserForm implements MyForm {
 
 	@NotNull(message = REQUIRED_ERROR)
 	@Size(min = 6, max=20, message = "6～20" + OVER_SIZE_ERROR)

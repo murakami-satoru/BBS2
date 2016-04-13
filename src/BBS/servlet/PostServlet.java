@@ -13,7 +13,7 @@ import BBS.beans.Users;
 import BBS.service.PostService;
 
 @WebServlet(urlPatterns= { "/registerPost" })
-public class PostServlet extends VaildatorServlet{
+public class PostServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{

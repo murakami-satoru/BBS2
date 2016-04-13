@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import BBS.beans.Users;
-import BBS.service.LoginService;
+import BBS.service.UserService;
 
 @WebServlet(urlPatterns= { "/login" })
-public class LoginServlet extends VaildatorServlet{
+public class LoginServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
@@ -25,8 +25,8 @@ public class LoginServlet extends VaildatorServlet{
 		String loginId = request.getParameter("login_id");
 		String password = request.getParameter("password");
 
-		LoginService loginService = new LoginService();
-		Users usersBean = loginService.login(loginId, password);
+		UserService userService = new UserService();
+		Users usersBean = userService.login(loginId, password);
 
 		HttpSession session = request.getSession();
 		if(usersBean != null){
