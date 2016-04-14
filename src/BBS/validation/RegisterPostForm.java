@@ -3,7 +3,7 @@ package BBS.validation;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RegisterPostForm implements MyForm {
+public class RegisterPostForm implements BBSForm {
 
 	@NotNull(message = REQUIRED_ERROR)
 	@Size(min = 1, max=50, message = "1～50" + OVER_SIZE_ERROR)
@@ -17,27 +17,27 @@ public class RegisterPostForm implements MyForm {
 	@Size(min = 1, max=10, message = "1～10" + OVER_SIZE_ERROR)
 	private String _category;
 
-	public String gettitle() {
+	public String getTitle() {
 		return _title;
 	}
 
-	public void settitle(String title) {
+	public void setTitle(String title) {
 		_title = title;
 	}
 
-	public String gettext() {
+	public String getText() {
 		return _text;
 	}
 
-	public void settext(String text) {
+	public void setText(String text) {
 		_text = text;
 	}
 
-	public String getcategory() {
+	public String getCategory() {
 		return _category;
 	}
 
-	public void setcategory(String category) {
+	public void setCategory(String category) {
 		_category = category;
 	}
 }

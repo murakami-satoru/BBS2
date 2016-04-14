@@ -61,8 +61,8 @@ public class CommentsDao {
 				commentsBean.setId(results.getInt("id"));
 				commentsBean.setText(results.getString("text"));
 				commentsBean.setUserName(results.getString("user_name"));
-				commentsBean.setCreatedDate(results.getDate("created_date"));
-				commentsBean.setUpdatedDate(results.getDate("updated_date"));
+				commentsBean.setCreatedDate(results.getTimestamp("created_date"));
+				commentsBean.setUpdatedDate(results.getTimestamp("updated_date"));
 
 				comments.add(commentsBean);
 			}

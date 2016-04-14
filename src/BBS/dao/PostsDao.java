@@ -65,8 +65,8 @@ public class PostsDao {
 				postsBean.setText(results.getString("text"));
 				postsBean.setCategory(results.getString("category"));
 				postsBean.setUserName(results.getString("user_name"));
-				postsBean.setCreatedDate(results.getDate("created_date"));
-				postsBean.setUpdatedDate(results.getDate("updated_date"));
+				postsBean.setCreatedDate(results.getTimestamp("created_date"));
+				postsBean.setUpdatedDate(results.getTimestamp("updated_date"));
 				postsBean.setComments(commentsDao.select(connection, postsBean.getId()));
 
 				posts.add(postsBean);

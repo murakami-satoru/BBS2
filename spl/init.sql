@@ -42,18 +42,18 @@ create table comments(
 	updated_date timestamp		
 );
 
-insert into branches (name) values ('–{Ğ');
-insert into branches (name) values ('“Œ‹x“X');
-insert into branches (name) values ('‰«“êx“X');
-insert into branches (name) values ('–kŠC“¹x“X');
+insert into branches (name) values ('æœ¬ç¤¾');
+insert into branches (name) values ('æ±äº¬æ”¯åº—');
+insert into branches (name) values ('æ²–ç¸„æ”¯åº—');
+insert into branches (name) values ('åŒ—æµ·é“æ”¯åº—');
 
-insert into departments (name) values ('ŠÇ—Ò');
-insert into departments (name) values ('‘–±l–’S“–Ò');
-insert into departments (name) values ('î•ñŠÇ—’S“–Ò');
-insert into departments (name) values ('x“X’·');
-insert into departments (name) values ('Ğˆõ');
+insert into departments (name) values ('ç®¡ç†è€…');
+insert into departments (name) values ('ç·å‹™äººäº‹æ‹…å½“è€…');
+insert into departments (name) values ('æƒ…å ±ç®¡ç†æ‹…å½“è€…');
+insert into departments (name) values ('æ”¯åº—é•·');
+insert into departments (name) values ('ç¤¾å“¡');
 
 insert into users (login_id,password,name,branch_id,department_id) 
-			values ('admin','admin','Œf¦”ÂŠÇ—Ò',1,1);
+			values ('admin','admin','æ²ç¤ºæ¿ç®¡ç†è€…',1,1);
 
 commit;

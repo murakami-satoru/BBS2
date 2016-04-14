@@ -14,7 +14,7 @@ public class Posts {
 	private String _userName;
 	private Date _createdDate;
 	private Date _updatedDate;
-	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 hh:mm:ss");
+	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 HH:mm:ss");
 	private List<Comments> _comments;
 
 	//Posts.idのセッター・ゲッター

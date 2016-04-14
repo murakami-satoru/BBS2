@@ -28,48 +28,49 @@
 			<td>投稿一覧</td>
 		</tr>
 		<tr><td>
-			<form action="registerComment" method="post">
-				<c:forEach items="${ posts }" var="post">
-					<tr><td><table border=2>
-						<tr>
-							<td>件名： <c:out value="${ post.title }"/> </td>
-						</tr>
-						<tr>
-							<td> <c:out value="${ post.text }"/> </td>
-						</tr>
-						<tr>
-							<td>投稿日時： <c:out value="${ post.createdDateString }"/> </td>
-						</tr>
-						<tr>
-							<td>投稿者： <c:out value="${ post.userName }"/> </td>
-						</tr>
-						<tr>
-							<td>コメント欄</td>
-						</tr>
-						<c:forEach items="${ post.comments }" var="comment">
-							<tr><td>
-							<table border=2>
-								<tr>
-									<td>コメント者： <c:out value="${ comment.userName }"/> ＜＜ <c:out value="${ comment.text }"/> </td>
-								</tr>
-								<tr>
-									<td>コメント日時： <c:out value="${ comment.createdDateString }"/> </td>
-								</tr>
-							</table>
-							</td></tr>
-						</c:forEach>
-						<tr>
-							<td align="right">コメント投稿内容:<textarea name="mainText" cols=40 rows=4 ></textarea></td>
-						</tr>
-						<tr>
-							<td>
+			<c:forEach items="${ posts }" var="post">
+				<tr><td><table border=2>
+					<tr>
+						<td>件名： <c:out value="${ post.title }"/> </td>
+					</tr>
+					<tr>
+						<td> <c:out escapeXml="fales" value="${ post.text }"/> </td>
+					</tr>
+					<tr>
+						<td>投稿日時： <c:out value="${ post.createdDateString }"/> </td>
+					</tr>
+					<tr>
+						<td>投稿者： <c:out value="${ post.userName }"/> </td>
+					</tr>
+					<tr>
+						<td>コメント欄</td>
+					</tr>
+					<c:forEach items="${ post.comments }" var="comment">
+						<tr><td>
+						<table border=2>
+							<tr>
+								<td>コメント者： <c:out value="${ comment.userName }"/> ＜＜ <c:out value="${ comment.text }"/> </td>
+							</tr>
+							<tr>
+								<td>コメント日時： <c:out value="${ comment.createdDateString }"/> </td>
+							</tr>
+						</table>
+						</td></tr>
+					</c:forEach>
+					<tr>
+						<td>
+							<form action="registerComment" method="post">
+								<textarea name="mainText" cols=40 rows=4 ><c:out value="${ inputComments.text }"/></textarea>
 								<input type="submit" value="コメントする">
 								<input type="hidden" name="post_id" value="<c:out value="${ post.id }"/>">
-							</td>
-						</tr>
-					</table></td></tr>
-				</c:forEach>
-			</form>
+							</form>
+							<c:forEach items="${ violationMessages['_text'] }" var="message">
+								<c:out value="${ message }"/>
+							</c:forEach>
+						</td>
+					</tr>
+				</table></td></tr>
+			</c:forEach>
 		</td></tr>
 	</table>
 </body>

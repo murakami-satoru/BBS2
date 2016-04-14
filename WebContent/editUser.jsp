@@ -5,16 +5,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ユーザー新規登録画面</title>
+<title>ユーザー編集画面</title>
 </head>
 <body>
-	<form action="registerUser" method="post">
+	<form action="updateUser" method="post">
 		<table>
 			<tr>
 				<td align="right">ログインID:</td>
 				<td>
 					<input type="text" name="login_id"  size="20" maxlength="20"
-					value="<c:out value="${ inputUsers.loginId }"/>">
+					value="<c:out value="${ user.loginId }"/>">
 					<c:forEach items="${ violationMessages['_loginId'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
@@ -23,9 +23,17 @@
 			<tr>
 				<td align="right">パスワード:</td>
 				<td>
-					<input type="password" name="password"  size="20" maxlength="255"
-					value="<c:out value="${ inputUsers.password }"/>">
+					<input type="password" name="password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_password'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">確認用パスワード:</td>
+				<td>
+					<input type="password" name="confirmation_password"  size="20" maxlength="255">
+					<c:forEach items="${ violationMessages['_confirmationPassword'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
 				</td>
@@ -34,7 +42,7 @@
 				<td align="right">名称:</td>
 				<td>
 					<input type="text" name="name"  size="10" maxlength="10"
-					value="<c:out value="${ inputUsers.name }"/>">
+					value="<c:out value="${ user.name }"/>">
 					<c:forEach items="${ violationMessages['_name'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
@@ -45,7 +53,7 @@
 				<td>
 					<select name="branch">
 						<c:forEach items="${ branches }" var="branch">
-							<option value="${ branch.id }" <c:if test="${ branch.id == inputUsers.branchId  }">selected</c:if> >
+							<option value="${ branch.id }" <c:if test="${ branch.id == user.branchId  }">selected</c:if> >
 								<c:out value="${ branch.name }" />
 							</option>
 						</c:forEach>
@@ -57,7 +65,7 @@
 				<td>
 					<select name="department">
 						<c:forEach items="${ departments }" var="department">
-							<option value="${ department.id }" <c:if test="${ department.id == inputUsers.departmentId  }">selected</c:if> >
+							<option value="${ department.id }" <c:if test="${ department.id == user.departmentId  }">selected</c:if> >
 								<c:out value="${ department.name }" />
 							</option>
 						</c:forEach>
@@ -65,7 +73,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="登録"></td>
+				<td>
+					<input type="hidden" name="id" value="<c:out value="${ user.id }"/>">
+					<input type="submit" value="更新">
+				</td>
 			</tr>
 		</table>
 	</form>

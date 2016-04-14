@@ -5,6 +5,7 @@ public class Users {
 	private int _id;
 	private String _loginId;
 	private String _password;
+	private String _confirmationPassword;
 	private String _name;
 	private int _branchId;
 	private int _departmentId;
@@ -32,6 +33,13 @@ public class Users {
 	}
 	public String getPassword(){
 		return _password;
+	}
+	//確認用パスワードのセッター・ゲッター
+	public void setConfirmationPassword(String confirmationPassword){
+		_confirmationPassword = confirmationPassword;
+	}
+	public String getConfirmationPassword(){
+		return _confirmationPassword;
 	}
 
 	//User.nameのセッター・ゲッター

@@ -12,7 +12,7 @@ public class Comments {
 	private int _postId;
 	private Date _createdDate;
 	private Date _updatedDate;
-	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 hh:mm:ss");
+	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 HH:mm:ss");
 
 	//Comments.idのセッター・ゲッター
 	public void setId(int id){

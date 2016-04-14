@@ -12,20 +12,20 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import BBS.validation.MyForm;
+import BBS.validation.BBSForm;
 
 public class BBSServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
-	protected Map<String, List<String>> validate(MyForm form){
+	protected Map<String, List<String>> validate(BBSForm form){
 
 		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 		Validator validator = validatorFactory.getValidator();
-		Set<ConstraintViolation<MyForm>> validationResult = validator.validate(form);
+		Set<ConstraintViolation<BBSForm>> validationResult = validator.validate(form);
 
 		Map<String, List<String>> violationMessages = new HashMap<String, List<String>>();
 
-		for(ConstraintViolation<MyForm> violation : validationResult){
+		for(ConstraintViolation<BBSForm> violation : validationResult){
 
 			String propertyPath = violation.getPropertyPath().toString();
 			List<String> messages = violationMessages.get(propertyPath);
@@ -36,5 +36,12 @@ public class BBSServlet extends HttpServlet{
 			messages.add(violation.getMessage());
 		}
 		return violationMessages;
+	}
+
+	//改行コードを<br>に変換
+	protected String lineSeparatorEncoder(String traget){
+		String decode;
+		decode = traget.replaceAll(System.lineSeparator(), "<br>");
+		return decode;
 	}
 }

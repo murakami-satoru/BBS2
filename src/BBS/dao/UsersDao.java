@@ -31,6 +31,18 @@ public class UsersDao {
 		}
 	}
 
+	public Users getUser(Connection connection, int id){
+		String sql = "select * from users where id = ?";
+		try(PreparedStatement statement = connection.prepareStatement(sql)){
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+			List<Users> users = toUsersList(results);
+			return users.get(0);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public void insert(Connection connection,Users users){
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into users ("
@@ -53,6 +65,41 @@ public class UsersDao {
 			statement.setString(3, users.getName());
 			statement.setInt(4, users.getBranchId());
 			statement.setInt(5, users.getDepartmentId());
+
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
+	public void update(Connection connection,Users users){
+		StringBuilder sql = new StringBuilder();
+		sql.append("update users set ("
+				 + "  login_id = ?"
+				 + ", name = ?"
+				 + ", branch_id = ?"
+				 + ", department_id = ?");
+		//passwordが入力されていれば更新
+		boolean isPassword = users.getPassword().equals("");
+		if(!isPassword){
+			sql.append(", password = ?");
+		}
+		sql.append("where id = ?");
+
+		System.out.println(sql.toString());
+
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+			statement.setString(1, users.getLoginId());
+			statement.setString(2, users.getName());
+			statement.setInt(3, users.getBranchId());
+			statement.setInt(4, users.getDepartmentId());
+			int parameterIndex = 5;
+			//passwordが入力されていれば更新
+			if(!isPassword){
+				statement.setString(parameterIndex, users.getPassword());
+				parameterIndex++;
+			}
+			statement.setInt(parameterIndex, users.getId());
 
 			statement.executeUpdate();
 		} catch (SQLException e) {

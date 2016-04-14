@@ -8,16 +8,40 @@
 <title>ユーザー管理画面</title>
 </head>
 <body>
-	<table>
+	<table border=2 align="left">
 		<tr>
-			 <td>
-			 	<a href="registerUser">ユーザー新規登録画面</a>
-			 </td>
-			 <td>
-			 	<a href="edit">ユーザー編集画面</a>
-			 </td>
+			<td>メニュー</td>
 		</tr>
-
+		<tr>
+			<td>
+				・<a href="registerUser">ユーザー新規登録画面</a>
+			</td>
+		</tr>
+	</table>
+	<table align="center">
+		<tr>
+			<td>ユーザー一覧</td>
+		</tr>
+		<tr><td>
+		<table border=2>
+		<tr>
+			<td>ログインID</td>
+			<td>名称</td>
+		</tr>
+		 <c:forEach items="${ users }" var="user">
+			<tr>
+				<td><c:out value="${ user.loginId }"/></td>
+				<td><c:out value="${ user.name }"/></td>
+				<td>
+					<form action="editUser" method="post">
+						<input type="hidden" name="id" value="<c:out value="${ user.id }"/>">
+						<input type="submit" value="ユーザー編集">
+					</form>
+				</td>
+			</tr>
+		</c:forEach>
+		</table>
+		</td></tr>
 	</table>
 </body>
 </html>

@@ -12,15 +12,32 @@
 		<table>
 			<tr>
 				<td align="right">件名:</td>
-				<td><input type="text" name="title"  size="20" maxlength="50"></td>
+				<td>
+					<input type="text" name="title"  size="20" maxlength="50"
+					value="<c:out value="${ inputPosts.title }"/>">
+					<c:forEach items="${ violationMessages['_title'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
 			</tr>
 			<tr>
 				<td align="right">投稿内容:</td>
-				<td><textarea name="mainText" cols=40 rows=4 ></textarea></td>
+				<td>
+					<textarea name="mainText" cols=40 rows=4 ><c:out value="${ inputPosts.text }"/></textarea>
+					<c:forEach items="${ violationMessages['_text'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
 			</tr>
 			<tr>
 				<td align="right">カテゴリー:</td>
-				<td><input type="text" name="category"  size="20" maxlength="10"></td>
+				<td>
+					<input type="text" name="category"  size="20" maxlength="10"
+					value="<c:out value="${ inputPosts.category }"/>">
+					<c:forEach items="${ violationMessages['_category'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="登録"></td>
