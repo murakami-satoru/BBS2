@@ -42,13 +42,12 @@ public class UpdateUserServlet extends UserServlet{
 	//ユーザー編集
 	private void updateUser(HttpServletRequest request,HttpServletResponse response,Users usersBean) throws ServletException, IOException{
 
-
-
 		UserService userService = new UserService();
 		List<String> messages = userService.checkPassword(usersBean);
 
 		if(messages.isEmpty()){
 			userService.update(usersBean);
+			request.setAttribute("users", userService.getUsers());
 			request.getRequestDispatcher("managementUser.jsp").forward(request, response);
 		}else{
 			request.setAttribute("user", usersBean);

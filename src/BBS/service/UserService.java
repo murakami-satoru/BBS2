@@ -40,6 +40,20 @@ public class UserService {
 		}
 	}
 
+	public void managementUser(Users usersBean){
+		Connection connection = DBUtil.getConnection();
+		UsersDao usersDao = new UsersDao();
+		try{
+			usersDao.managementUser(connection, usersBean);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+	}
+
 	public Users login(String loginId,String password){
 		Connection connection = DBUtil.getConnection();
 		try{

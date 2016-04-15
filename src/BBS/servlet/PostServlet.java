@@ -15,7 +15,7 @@ import BBS.beans.Users;
 import BBS.service.PostService;
 import BBS.validation.RegisterPostForm;
 
-@WebServlet(urlPatterns= { "/registerPost" })
+@WebServlet(urlPatterns= { "/registerPost","/deletePost" })
 public class PostServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
@@ -24,6 +24,14 @@ public class PostServlet extends BBSServlet{
 	}
 
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
+		if(request.getServletPath().indexOf("/registerPost") != -1){
+			register(request, response);
+		}else if(request.getServletPath().indexOf("/deletePost") != -1){
+			delete(request, response);
+		}
+	}
+
+	private void register(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
 		Posts postsBean = new Posts();
 
@@ -44,6 +52,14 @@ public class PostServlet extends BBSServlet{
 			postService.register(postsBean);
 			response.sendRedirect("home");
 		}
+	}
+	private void delete(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		Posts postsBean = new Posts();
+
+		postsBean.setId(Integer.parseInt(request.getParameter("post_id")));
+		PostService postService = new PostService();
+		postService.delete(postsBean);
+		response.sendRedirect("home");
 	}
 
 	private RegisterPostForm toRegisterPostForm(Posts postsBean){

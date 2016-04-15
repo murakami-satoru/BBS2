@@ -23,12 +23,25 @@ public class PostService {
 			DBUtil.close(connection);
 		}
 	}
+	public void delete(Posts postsBean){
+		Connection connection = DBUtil.getConnection();
+		PostsDao postsDao = new PostsDao();
+		try{
+			postsDao.delete(connection, postsBean);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+	}
 	public List<Posts> getPosts(){
 		Connection connection = DBUtil.getConnection();
 		PostsDao postsDao = new PostsDao();
 		List<Posts> posts = new ArrayList<Posts>();
 		try{
-			posts = postsDao.select(connection);
+			posts = postsDao.selectAll(connection);
 			DBUtil.commit(connection);
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);
@@ -39,7 +52,4 @@ public class PostService {
 
 		return posts;
 	}
-
-
-
 }

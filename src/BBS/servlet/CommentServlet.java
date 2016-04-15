@@ -24,9 +24,15 @@ public class CommentServlet extends BBSServlet{
 	}
 
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
-		HttpSession session = request.getSession();
-		Comments commentsBean = new Comments();
+		if(request.getServletPath().indexOf("/registerComment") != -1){
+			register(request, response);
+		}
+	}
 
+
+	private void register(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		Comments commentsBean = new Comments();
+		HttpSession session = request.getSession();
 		commentsBean.setText(lineSeparatorEncoder(request.getParameter("mainText")));
 		commentsBean.setPostId(Integer.parseInt(request.getParameter("post_id")));
 		Users userBean = (Users) session.getAttribute("loginUser");
@@ -44,6 +50,7 @@ public class CommentServlet extends BBSServlet{
 			response.sendRedirect("home");
 		}
 	}
+
 
 	private RegisterCommentForm toRegisterCommentForm(Comments commentsBean){
 		RegisterCommentForm form = new RegisterCommentForm();

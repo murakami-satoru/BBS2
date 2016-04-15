@@ -11,7 +11,7 @@ public class Posts {
 	private String _text;
 	private String _category;
 	private int _userId;
-	private String _userName;
+	private Users _user;
 	private Date _createdDate;
 	private Date _updatedDate;
 	private SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E曜日 HH:mm:ss");
@@ -75,12 +75,36 @@ public class Posts {
 		return _updatedDate;
 	}
 
+	//user_idに紐づくUsersのセッター・ゲッター
+	public void setUser(Users user){
+		_user = user;
+	}
+	public Users getUser(){
+		return _user;
+	}
+
+
 	//user_idに紐づくUsers.nameのセッター・ゲッター
 	public void setUserName(String userName){
-		_userName = userName;
+		getUser().setName(userName);
 	}
 	public String getUserName(){
-		return _userName;
+		return getUser().getName();
+	}
+
+	//user_idに紐づくusers.branch_idのセッター・ゲッター
+	public void setBranchId(int branchId){
+		getUser().setBranchId(branchId);
+	}
+	public int getBranchId(){
+		return getUser().getBranchId();
+	}
+	//user_idに紐づくusers.department_idのセッター・ゲッター
+	public void setDepartmentId(int departmentId){
+		getUser().setDepartmentId(departmentId);
+	}
+	public int getDepartmentId(){
+		return getUser().getDepartmentId();
 	}
 
 	//Posts.idに紐づくCommentsのセッター・ゲッター

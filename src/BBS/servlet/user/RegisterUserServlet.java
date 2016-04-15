@@ -42,6 +42,7 @@ public class RegisterUserServlet extends UserServlet{
 			request.getRequestDispatcher("registerUser.jsp").forward(request, response);
 		}else{
 			new UserService().register(usersBean);
+			request.setAttribute("users", new UserService().getUsers());
 			request.getRequestDispatcher("managementUser.jsp").forward(request, response);
 		}
 	}

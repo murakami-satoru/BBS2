@@ -27,7 +27,7 @@ public class UserServlet extends BBSServlet{
 		}
 		return form;
 	}
-	protected UserForm toEditrUserForm(Users usersBean){
+	protected EditUserForm toEditrUserForm(Users usersBean){
 		EditUserForm form = new EditUserForm();
 
 		String loginId = usersBean.getLoginId();

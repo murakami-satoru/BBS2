@@ -74,20 +74,17 @@ public class UsersDao {
 	}
 	public void update(Connection connection,Users users){
 		StringBuilder sql = new StringBuilder();
-		sql.append("update users set ("
-				 + "  login_id = ?"
-				 + ", name = ?"
-				 + ", branch_id = ?"
-				 + ", department_id = ?");
+		sql.append("update users set "
+				 + "  login_id = ? "
+				 + ", name = ? "
+				 + ", branch_id = ? "
+				 + ", department_id = ? ");
 		//passwordが入力されていれば更新
 		boolean isPassword = users.getPassword().equals("");
 		if(!isPassword){
-			sql.append(", password = ?");
+			sql.append(", password = ? ");
 		}
-		sql.append("where id = ?");
-
-		System.out.println(sql.toString());
-
+		sql.append(" where id = ? ");
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
 			statement.setString(1, users.getLoginId());
 			statement.setString(2, users.getName());
@@ -100,6 +97,29 @@ public class UsersDao {
 				parameterIndex++;
 			}
 			statement.setInt(parameterIndex, users.getId());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
+
+	public void managementUser(Connection connection,Users users){
+		StringBuilder sql = new StringBuilder();
+		sql.append("update users set is_locked = ? ");
+		sql.append(" where id = ? ");
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+
+			//isLockedを見て停止か復活かを分ける
+			if(users.getIsLocked() == 0){
+				//停止させる「１」を入れる
+				statement.setInt(1, 1);
+			}else{
+				//復活させる「０」を入れる
+				statement.setInt(1, 0);
+			}
+
+			statement.setInt(2, users.getId());
 
 			statement.executeUpdate();
 		} catch (SQLException e) {
