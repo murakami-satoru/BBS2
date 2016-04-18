@@ -27,31 +27,21 @@ public class UpdateUserServlet extends UserServlet{
 		usersBean.setName(request.getParameter("name"));
 		usersBean.setBranchId(Integer.parseInt(request.getParameter("branch")));
 		usersBean.setDepartmentId(Integer.parseInt(request.getParameter("department")));
-		request.setAttribute("user", usersBean);
-
-		Map<String, List<String>> violationMessages = validate(toEditrUserForm(usersBean));
-
-		if(!violationMessages.isEmpty()){
-			request.setAttribute("violationMessages", violationMessages);
-			request.getRequestDispatcher("editUser.jsp").forward(request, response);
-		}else{
-			updateUser(request, response,usersBean);
-		}
-	}
-
-	//ユーザー編集
-	private void updateUser(HttpServletRequest request,HttpServletResponse response,Users usersBean) throws ServletException, IOException{
 
 		UserService userService = new UserService();
 		List<String> messages = userService.checkPassword(usersBean);
+		Map<String, List<String>> violationMessages = validate(toUserForm(usersBean));
 
-		if(messages.isEmpty()){
+		//バリデーションメッセージかパスワードの不一致があった場合は更新できない
+		if(!violationMessages.isEmpty() || !messages.isEmpty()){
+			request.setAttribute("user", usersBean);
+			request.setAttribute("violationMessages", violationMessages);
+			request.setAttribute("messages", messages);
+			request.getRequestDispatcher("editUser.jsp").forward(request, response);
+		}else{
 			userService.update(usersBean);
 			request.setAttribute("users", userService.getUsers());
 			request.getRequestDispatcher("managementUser.jsp").forward(request, response);
-		}else{
-			request.setAttribute("user", usersBean);
-			request.getRequestDispatcher("editUser.jsp").forward(request, response);
 		}
 	}
 }

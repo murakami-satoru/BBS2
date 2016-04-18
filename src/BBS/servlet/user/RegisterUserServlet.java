@@ -27,22 +27,26 @@ public class RegisterUserServlet extends UserServlet{
 	//ユーザー新規登録
 	private void registerUser(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		Users usersBean = new Users();
+		UserService userService =  new UserService();
 
 		usersBean.setLoginId(request.getParameter("login_id"));
 		usersBean.setPassword(request.getParameter("password"));
+		usersBean.setConfirmationPassword(request.getParameter("confirmation_password"));
 		usersBean.setName(request.getParameter("name"));
 		usersBean.setBranchId(Integer.parseInt(request.getParameter("branch")));
 		usersBean.setDepartmentId(Integer.parseInt(request.getParameter("department")));
 
 		Map<String, List<String>> violationMessages = validate(toUserForm(usersBean));
+		List<String> messages = userService.checkPassword(usersBean);
 
-		if(!violationMessages.isEmpty()){
+		if(!violationMessages.isEmpty() || !messages.isEmpty()){
 			request.setAttribute("violationMessages", violationMessages);
+			request.setAttribute("messages", messages);
 			request.setAttribute("inputUsers", usersBean);
 			request.getRequestDispatcher("registerUser.jsp").forward(request, response);
 		}else{
-			new UserService().register(usersBean);
-			request.setAttribute("users", new UserService().getUsers());
+			userService.register(usersBean);
+			request.setAttribute("users", userService.getUsers());
 			request.getRequestDispatcher("managementUser.jsp").forward(request, response);
 		}
 	}

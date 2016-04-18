@@ -14,8 +14,10 @@ public class HomeServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
-		request.getSession().setAttribute("posts", new PostService().getPosts());
+		PostService postService = new PostService();
+
+		request.setAttribute("posts", postService.getPosts());
+		request.setAttribute("categories", postService.getCategories());
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
-
 }

@@ -5,6 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+    function getSelect(text) {
+    	document.getElementById('selectedCategory').value = text;
+    }
+</script>
 <title>新規投稿画面</title>
 </head>
 <body>
@@ -32,11 +37,23 @@
 			<tr>
 				<td align="right">カテゴリー:</td>
 				<td>
-					<input type="text" name="category"  size="20" maxlength="10"
+					<input type="text" name="category" id="selectedCategory" size="20" maxlength="10"
 					value="<c:out value="${ inputPosts.category }"/>">
 					<c:forEach items="${ violationMessages['_category'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">カテゴリー一覧:</td>
+				<td>
+					<select name="categories" onChange="getSelect(this.value)">
+						<c:forEach items="${ categories }" var="category" >
+							<option value="${ category }">
+								<c:out value="${ category }" />
+							</option>
+						</c:forEach>
+					</select>
 				</td>
 			</tr>
 			<tr>

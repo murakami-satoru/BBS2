@@ -54,6 +54,36 @@ public class PostsDao {
 		}
 	}
 
+	public List<String> getCategories(Connection connection){
+		List<String> categories = new ArrayList<String>();
+		//カテゴリー一覧表示のため一番上にブランクが来るように追加。
+		categories.add("");
+		String sql = "select distinct category from view_posts order by id  ";
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+			ResultSet results = statement.executeQuery();
+			while(results.next()){
+				categories.add(results.getString("category"));
+			}
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return categories;
+	}
+
+	public List<Posts> selectAll(Connection connection){
+		List<Posts> posts = new ArrayList<Posts>();
+		String sql = "select * from view_posts order by id  ";
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+
 	public List<Posts> selectCategory(Connection connection, String category){
 		List<Posts> posts = new ArrayList<Posts>();
 		String sql = "select * from view_posts where category = ? order by id";
@@ -80,6 +110,23 @@ public class PostsDao {
 
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
 			statement.setString(1, date);
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+
+	public List<Posts> selectDate(Connection connection, String fromDate, String toDate){
+		List<Posts> posts = new ArrayList<Posts>();
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from view_posts where created_date between ? and ? ");
+
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+			statement.setString(1, fromDate);
+			statement.setString(2, toDate);
 			ResultSet results = statement.executeQuery();
 			posts = toPostsList(results,connection);
 		} catch (SQLException e) {

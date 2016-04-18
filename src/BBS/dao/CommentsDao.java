@@ -51,6 +51,19 @@ public class CommentsDao {
 		}
 	}
 
+	public List<Comments> selectAll(Connection connection){
+		List<Comments> commentsBeans = new ArrayList<Comments>();
+		String sql = "select * from view_comments order by id";
+
+		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
+			commentsBeans = toCommentsList(statement.executeQuery());
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return commentsBeans;
+	}
+
 	public List<Comments> select(Connection connection,int postId){
 		List<Comments> commentsBeans = new ArrayList<Comments>();
 		String sql = "select * from view_comments where post_id = ? order by id";

@@ -5,9 +5,46 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" language="javascript">
+function func(command,form){
+	var popupMessage;
+
+	//あらかじめ停止・復活機能を入れる
+	form.action = "managementUser";
+
+	if(command == "edit"){
+		form.action = "editUser";
+		form.submit();
+	}else if(command == "stop"){
+		confirmSubmit("ユーザーを停止しますか。",form)
+	}else if(command == "resurrect"){
+		confirmSubmit("ユーザーを復活しますか。",form);
+	}
+}
+
+function confirmSubmit(message,form){
+	var result = confirm( message );
+	if(result){
+		form.submit();
+	}
+}
+
+</script>
 <title>ユーザー管理画面</title>
 </head>
 <body>
+	<h2>
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${ errorMessages }" var="message">
+						<li><c:out value="${ message }"/></li>
+					</c:forEach>
+				</ul>
+			</div>
+			<c:remove var="errorMessages" scope="session"/>
+		</c:if>
+	</h2>
 	<table border=2 align="left">
 		<tr>
 			<td>メニュー</td>
@@ -28,14 +65,22 @@
 			<td>ログインID</td>
 			<td>名称</td>
 		</tr>
-		 <c:forEach items="${ users }" var="user">
+		 <c:forEach items="${ users }" var="user" varStatus="status">
 			<tr>
 				<td><c:out value="${ user.loginId }"/></td>
 				<td><c:out value="${ user.name }"/></td>
 				<td>
-					<form action="editUser" method="post">
-						<input type="hidden" name="id" value="<c:out value="${ user.id }"/>">
-						<input type="submit" value="ユーザー編集">
+					<form name="forButton${ status.index }" action="" method="post">
+						<input type="hidden" name="id" value="${ user.id }" >
+						<input type="button" name="edit" value="編集" onClick="func(this.name,this.form)">
+						<c:choose>
+							<c:when test="${ user.isLocked == 0 }">
+								<input type="button" name="stop" value="停止" onClick="func(this.name,this.form)">
+							</c:when>
+							<c:when test="${ user.isLocked == 1 }">
+								<input type="button" name="resurrect" value="復活" onClick="func(this.name,this.form)">
+							</c:when>
+						</c:choose>
 					</form>
 				</td>
 			</tr>

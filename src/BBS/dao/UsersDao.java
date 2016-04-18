@@ -11,8 +11,9 @@ import BBS.beans.Users;
 
 public class UsersDao {
 
-	public Users getUsers(Connection connection, String loginId, String password){
-		String sql = "select * from users where login_id = ? and password = ?";
+	public Users login(Connection connection, String loginId, String password){
+		//アカウント停止していたらログインできない。
+		String sql = "select * from users where is_locked = 0 and login_id = ? and password = ?";
 		try(PreparedStatement statement = connection.prepareStatement(sql)){
 			statement.setString(1, loginId);
 			statement.setString(2, password);

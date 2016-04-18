@@ -18,8 +18,6 @@ import BBS.beans.Users;
 
 @WebFilter(urlPatterns={"/*"})
 public class IsgeneralAffairsFilter implements Filter{
-
-
 	@Override
 	public void destroy() {}
 
@@ -33,16 +31,17 @@ public class IsgeneralAffairsFilter implements Filter{
 		if(servletpath.indexOf("User") != -1 ){
 			Users usersBean = (Users) session.getAttribute("loginUser");
 			int departmentId = usersBean.getDepartmentId();
-			if(departmentId != 2){
+			int branchId = usersBean.getBranchId();
+			//本社総務部以外がユーザー管理系の画面に遷移した場合にはじく
+			if(departmentId != 3 && branchId != 1){
 				List<String> messages = new ArrayList<String>();
-				messages.add("総務部以外は操作できません");
+				messages.add("本社総務部以外は操作できません");
 				session.setAttribute("errorMessages", messages);
 				request.getRequestDispatcher("home.jsp").forward(request, response);
 				return;
 			}
 		}
 		chain.doFilter(request, response);
-
 	}
 
 	@Override

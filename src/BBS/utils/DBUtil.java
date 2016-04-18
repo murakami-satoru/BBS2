@@ -27,7 +27,6 @@ public class DBUtil {
 	public static void commit(Connection connection){
 		try{
 			connection.commit();
-			System.out.println("コミット");
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -36,7 +35,6 @@ public class DBUtil {
 	public static void rollback(Connection connection){
 		try{
 			connection.rollback();
-			System.out.println("ロールバック");
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -45,7 +43,6 @@ public class DBUtil {
 	public static void close(Connection connection){
 		try{
 			connection.close();
-			System.out.println("クローズ");
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

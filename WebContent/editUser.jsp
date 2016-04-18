@@ -8,6 +8,18 @@
 <title>ユーザー編集画面</title>
 </head>
 <body>
+	<h2>
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${ errorMessages }" var="message">
+						<li><c:out value="${ message }"/></li>
+					</c:forEach>
+				</ul>
+			</div>
+			<c:remove var="errorMessages" scope="session"/>
+		</c:if>
+	</h2>
 	<form action="updateUser" method="post">
 		<table>
 			<tr>
@@ -34,6 +46,9 @@
 				<td>
 					<input type="password" name="confirmation_password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_confirmationPassword'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+					<c:forEach items="${ messages }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
 				</td>

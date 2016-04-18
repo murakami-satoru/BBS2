@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import BBS.beans.Comments;
 import BBS.beans.Users;
 import BBS.service.CommentService;
+import BBS.service.PostService;
 import BBS.validation.RegisterCommentForm;
 
 @WebServlet(urlPatterns= { "/registerComment" })
@@ -41,8 +42,11 @@ public class CommentServlet extends BBSServlet{
 		Map<String, List<String>> violationMessages = validate(toRegisterCommentForm(commentsBean));
 
 		if(!violationMessages.isEmpty()){
+			PostService postService = new PostService();
 			request.setAttribute("violationMessages", violationMessages);
 			request.setAttribute("inputComments", commentsBean);
+			request.setAttribute("posts", postService.getPosts());
+			request.setAttribute("categories", postService.getCategories());
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}else{
 			CommentService commentService = new CommentService();

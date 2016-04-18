@@ -8,6 +8,18 @@
 <title>ユーザー新規登録画面</title>
 </head>
 <body>
+	<h2>
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${ errorMessages }" var="message">
+						<li><c:out value="${ message }"/></li>
+					</c:forEach>
+				</ul>
+			</div>
+			<c:remove var="errorMessages" scope="session"/>
+		</c:if>
+	</h2>
 	<form action="registerUser" method="post">
 		<table>
 			<tr>
@@ -23,9 +35,20 @@
 			<tr>
 				<td align="right">パスワード:</td>
 				<td>
-					<input type="password" name="password"  size="20" maxlength="255"
-					value="<c:out value="${ inputUsers.password }"/>">
+					<input type="password" name="password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_password'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">確認用パスワード:</td>
+				<td>
+					<input type="password" name="confirmation_password"  size="20" maxlength="255">
+					<c:forEach items="${ violationMessages['_confirmationPassword'] }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+					<c:forEach items="${ messages }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
 				</td>
