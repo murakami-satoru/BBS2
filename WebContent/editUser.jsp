@@ -5,45 +5,46 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ユーザー編集画面</title>
+<link rel="stylesheet" type="text/css" href="css/bbs.css">
+<title>掲示板システム</title>
 </head>
-<body>
-	<h2>
-		<c:if test="${ not empty errorMessages }">
-			<div class="errorMessages">
+<body id="home">
+	<div id="wrapper">
+		<div id="header">
+			<h1>ユーザー編集</h1>
+			<div id="menu">
 				<ul>
-					<c:forEach items="${ errorMessages }" var="message">
-						<li><c:out value="${ message }"/></li>
-					</c:forEach>
+					<li><a href="managementUser">ユーザー管理</a></li>
 				</ul>
+				<div id="error">
+					<c:if test="${ not empty errorMessages }">
+						<c:forEach items="${ errorMessages }" var="message">
+							<c:out value="${ message }"/>
+						</c:forEach>
+						<c:remove var="errorMessages" scope="session"/>
+					</c:if>
+				</div>
 			</div>
-			<c:remove var="errorMessages" scope="session"/>
-		</c:if>
-	</h2>
-	<form action="updateUser" method="post">
-		<table>
-			<tr>
-				<td align="right">ログインID:</td>
-				<td>
+		</div>
+		<div id="form">
+			<form action="updateUser" method="post">
+				<div>
+					<label>ログインID:</label>
 					<input type="text" name="login_id"  size="20" maxlength="20"
 					value="<c:out value="${ user.loginId }"/>">
 					<c:forEach items="${ violationMessages['_loginId'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">パスワード:</td>
-				<td>
+				</div>
+				<div>
+					<label>パスワード:</label>
 					<input type="password" name="password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_password'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">確認用パスワード:</td>
-				<td>
+				</div>
+				<div>
+					<label>確認用パスワード:</label>
 					<input type="password" name="confirmation_password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_confirmationPassword'] }" var="message">
 						<c:out value="${ message }"/>
@@ -51,21 +52,17 @@
 					<c:forEach items="${ messages }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">名称:</td>
-				<td>
+				</div>
+				<div>
+					<label>名称:</label>
 					<input type="text" name="name"  size="10" maxlength="10"
 					value="<c:out value="${ user.name }"/>">
 					<c:forEach items="${ violationMessages['_name'] }" var="message">
 						<c:out value="${ message }"/>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">部署:</td>
-				<td>
+				</div>
+				<div>
+					<label>部署:</label>
 					<select name="branch">
 						<c:forEach items="${ branches }" var="branch">
 							<option value="${ branch.id }" <c:if test="${ branch.id == user.branchId  }">selected</c:if> >
@@ -73,11 +70,9 @@
 							</option>
 						</c:forEach>
 					</select>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">役職:</td>
-				<td>
+				</div>
+				<div>
+					<label>役職:</label>
 					<select name="department">
 						<c:forEach items="${ departments }" var="department">
 							<option value="${ department.id }" <c:if test="${ department.id == user.departmentId  }">selected</c:if> >
@@ -85,15 +80,13 @@
 							</option>
 						</c:forEach>
 					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>
+				</div>
+				<div>
 					<input type="hidden" name="id" value="<c:out value="${ user.id }"/>">
 					<input type="submit" value="更新">
-				</td>
-			</tr>
-		</table>
-	</form>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

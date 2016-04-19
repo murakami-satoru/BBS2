@@ -5,38 +5,39 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>掲示板システムログイン画面</title>
+<link rel="stylesheet" type="text/css" href="css/bbs.css">
+<title>掲示板システム</title>
 </head>
-<body>
-
-	<c:if test="${ not empty errorMessages }">
-		<div class="errorMessages">
-			<ul>
-				<c:forEach items="${ errorMessages }" var="message">
-					<li><c:out value="${ message }"/></li>
-				</c:forEach>
-			</ul>
+<body id="home">
+	<div id="wrapper">
+		<div id="header">
+			<h1>掲示板システム</h1>
+			<div id="menu">
+				<div id="error">
+					<c:if test="${ not empty errorMessages }">
+						<c:forEach items="${ errorMessages }" var="message">
+							<c:out value="${ message }"/>
+						</c:forEach>
+						<c:remove var="errorMessages" scope="session"/>
+					</c:if>
+				</div>
+			</div>
 		</div>
-		<c:remove var="errorMessages" scope="session"/>
-	</c:if>
-	<form action="login" method="post">
-		<table>
-			<tr>
-				<td align="right">ログインID:</td>
-				<td>
+		<div id="form">
+			<form action="login" method="post">
+				<div>
+					<label>ログインID:</label>
 					<input type="text" name="login_id"  size="20" maxlength="20">
-				</td>
-			</tr>
-			<tr>
-				<td align="right">パスワード:</td>
-				<td>
+				</div>
+				<div>
+					<label>パスワード:</label>
 					<input type="password" name="password"  size="20" maxlength="255">
-				</td>
-			</tr>
-			<tr>
-				<td><input type="submit" value="ログイン"></td>
-			</tr>
-		</table>
-	</form>
+				</div>
+				<div>
+					<input type="submit" value="ログイン">
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

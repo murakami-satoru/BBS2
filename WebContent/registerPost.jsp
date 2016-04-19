@@ -10,43 +10,54 @@
     	document.getElementById('selectedCategory').value = text;
     }
 </script>
-<title>新規投稿画面</title>
+<link rel="stylesheet" type="text/css" href="css/bbs.css">
+<title>掲示板システム</title>
 </head>
-<body>
-	<form action="registerPost" method="post">
-		<table>
-			<tr>
-				<td align="right">件名:</td>
-				<td>
+<body id="home">
+	<div id="wrapper">
+		<div id="header">
+			<h1>新規投稿</h1>
+			<div id="menu">
+				<ul>
+					<li><a href="home">ホーム</a></li>
+				</ul>
+				<div id="error">
+					<c:if test="${ not empty errorMessages }">
+						<c:forEach items="${ errorMessages }" var="message">
+							<c:out value="${ message }"/>
+						</c:forEach>
+						<c:remove var="errorMessages" scope="session"/>
+					</c:if>
+				</div>
+			</div>
+		</div>
+		<div id="form">
+			<form action="registerPost" method="post">
+				<div>
+					<label>件名:</label>
 					<input type="text" name="title"  size="20" maxlength="50"
 					value="<c:out value="${ inputPosts.title }"/>">
 					<c:forEach items="${ violationMessages['_title'] }" var="message">
-						<c:out value="${ message }"/>
+						<div id="error"><c:out value="${ message }"/></div>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">投稿内容:</td>
-				<td>
-					<textarea name="mainText" cols=40 rows=4 ><c:out value="${ inputPosts.text }"/></textarea>
+				</div>
+				<div>
+					<label>投稿内容:</label>
+					<textarea name="mainText" cols=50 rows=10 ><c:out value="${ inputPosts.text }"/></textarea>
 					<c:forEach items="${ violationMessages['_text'] }" var="message">
-						<c:out value="${ message }"/>
+						<div id="error"><c:out value="${ message }"/></div>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">カテゴリー:</td>
-				<td>
+				</div>
+				<div>
+					<label>カテゴリー:</label>
 					<input type="text" name="category" id="selectedCategory" size="20" maxlength="10"
 					value="<c:out value="${ inputPosts.category }"/>">
 					<c:forEach items="${ violationMessages['_category'] }" var="message">
-						<c:out value="${ message }"/>
+						<div id="error"><c:out value="${ message }"/></div>
 					</c:forEach>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">カテゴリー一覧:</td>
-				<td>
+				</div>
+				<div>
+					<label>カテゴリー一覧:</label>
 					<select name="categories" onChange="getSelect(this.value)">
 						<c:forEach items="${ categories }" var="category" >
 							<option value="${ category }">
@@ -54,12 +65,10 @@
 							</option>
 						</c:forEach>
 					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><input type="submit" value="登録"></td>
-			</tr>
-		</table>
-	</form>
+				</div>
+				<div><input id="button" type="submit" value="登録"></div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

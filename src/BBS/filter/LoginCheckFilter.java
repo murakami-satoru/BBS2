@@ -12,13 +12,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import BBS.beans.Users;
-
 @WebFilter(urlPatterns={"/*"})
-public class IsgeneralAffairsFilter implements Filter{
+public class LoginCheckFilter implements Filter{
 	@Override
 	public void destroy() {}
 
@@ -29,16 +26,15 @@ public class IsgeneralAffairsFilter implements Filter{
 		HttpSession session = ((HttpServletRequest) request).getSession();
 		String servletpath = ((HttpServletRequest) request).getServletPath();
 
-		if(servletpath.indexOf("User") != -1 ){
-			Users usersBean = (Users) session.getAttribute("loginUser");
-			int departmentId = usersBean.getDepartmentId();
-			int branchId = usersBean.getBranchId();
-			//本社総務部以外がユーザー管理系の画面に遷移した場合にはじく
-			if(departmentId != 3 && branchId != 1){
+		System.out.println(servletpath);
+
+		//ログイン画面以外の画面でログイン情報がなければホーム画面に戻す。
+		if(servletpath.indexOf("login") != 1 ){
+			if(session.getAttribute("loginUser") == null){
 				List<String> messages = new ArrayList<String>();
-				messages.add("本社総務部以外は操作できません");
+				messages.add("ログインしてください");
 				session.setAttribute("errorMessages", messages);
-				((HttpServletResponse) response).sendRedirect("home");
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 				return;
 			}
 		}

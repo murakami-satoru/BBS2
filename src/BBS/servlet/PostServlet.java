@@ -42,7 +42,7 @@ public class PostServlet extends BBSServlet{
 		Posts postsBean = new Posts();
 
 		postsBean.setTitle(request.getParameter("title"));
-		postsBean.setText(lineSeparatorEncoder(request.getParameter("mainText")));
+		postsBean.setText(request.getParameter("mainText"));
 		postsBean.setCategory(request.getParameter("category"));
 		Users userBean = (Users) session.getAttribute("loginUser");
 		postsBean.setUserId(userBean.getId());
@@ -55,6 +55,8 @@ public class PostServlet extends BBSServlet{
 			request.getRequestDispatcher("registerPost.jsp").forward(request, response);
 		}else{
 			PostService postService = new PostService();
+			//本文のエンコーダーはバリデーションの後に行う。
+			postsBean.setText(lineSeparatorEncoder(postsBean.getText()));
 			postService.register(postsBean);
 			response.sendRedirect("home");
 		}

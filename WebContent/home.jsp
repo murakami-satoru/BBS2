@@ -15,94 +15,100 @@
     	document.getElementById('selectedCategory').value = text;
     }
 </script>
-<link rel="stylesheet" type="text/css" href="css/home.css">
+<link rel="stylesheet" type="text/css" href="css/bbs.css">
 <title>掲示板システム</title>
 </head>
 <body id="home">
 	<div id="wrapper">
 		<div id="header">
-			<h1>掲示板システムホーム画面</h1>
-			<div id="globalnavi">
+			<h1>ホーム画面</h1>
+			<div id="menu">
 				<ul>
 					<li><a href="registerPost">新規投稿</a></li>
-					<li><a href="managementUser">ユーザー管理画面</a></li>
+					<li><a href="managementUser">ユーザー管理</a></li>
+					<li>　</li>
+					<li>　</li>
+					<li>　</li>
+					<li>　</li>
+					<li><a href="logout">ログアウト</a></li>
 				</ul>
-				<c:if test="${ not empty errorMessages }">
-					<c:forEach items="${ errorMessages }" var="message">
-						<c:out value="${ message }"/>
-					</c:forEach>
-					<c:remove var="errorMessages" scope="session"/>
-				</c:if>
+				<div id="error">
+					<c:if test="${ not empty errorMessages }">
+						<c:forEach items="${ errorMessages }" var="message">
+							<div id="error"><c:out value="${ message }"/></div>
+						</c:forEach>
+						<c:remove var="errorMessages" scope="session"/>
+					</c:if>
+				</div>
 			</div>
 		</div>
-		<div id="posts">
-			<div id="search">
-				<div>
-					<form action="searchCategory" method="post">
-						<label>カテゴリー検索：</label>
-						<input type="text" name="category" id="selectedCategory" size="20" maxlength="10"
-							value="<c:out value="${ inputCategory }"/>">
-						<select name="categories" onChange="getSelect(this.value)">
-							<c:forEach items="${ categories }" var="category" >
-								<option value="${ category }">
-									<c:out value="${ category }" />
-								</option>
-							</c:forEach>
-						</select>
-						<input type="submit" value="検索">
-					</form>
-				</div>
-				<form id="search_date" action="searchDate" method="post">
-					<label>日時検索：</label>
-					<input type="text" name="from_date" onClick="toCal.hide(); fromCal.write();"
-					onChange="fromCal.getFormValue(); fromCal.hide();"
-					value="<c:out value="${ inputFromDate }"/>" readonly size="8"><div id="fromCal"></div>
+		<div id="search">
+			<form action="searchCategory" method="post">
+				<input type="text" name="category" id="selectedCategory" size="20" maxlength="10"
+					value="<c:out value="${ inputCategory }"/>">
+				<select name="categories" onChange="getSelect(this.value)">
+					<c:forEach items="${ categories }" var="category" >
+						<option value="${ category }">
+							<c:out value="${ category }" />
+						</option>
+					</c:forEach>
+				</select>
+				<input type="submit" value="カテゴリー検索">
+			</form>
+			<form id="search_date" action="searchDate" method="post">
+				<input type="text" name="from_date" onClick="toCal.hide(); fromCal.write();"
+				onChange="fromCal.getFormValue(); fromCal.hide();"
+				value="<c:out value="${ inputFromDate }"/>" readonly size="8"><div id="fromCal"></div>
 
-					<label>～</label>
-					<input type="text" name="to_date" onClick="fromCal.hide(); toCal.write();"
-					onChange="toCal.getFormValue(); toCal.hide();"
-					value="<c:out value="${ inputToDate }"/>" readonly size="8"><div id="toCal"></div>
-					<input type="submit" value="検索">
-				</form>
-			</div>
-			<div>
-				<c:forEach items="${ posts }" var="post" varStatus="status">
-					<div id="post">
-						<div>件名： <c:out value="${ post.title }"/></div>
-						<div>カテゴリー： <c:out value="${ post.category }"/></div>
-						<div> <c:out escapeXml="fales" value="${ post.text }"/> </div>
-						<div>投稿日時： <c:out value="${ post.createdDateString }"/></div>
-						<div>投稿者： <c:out value="${ post.userName }"/></div>
+				<label>～</label>
+				<input type="text" name="to_date" onClick="fromCal.hide(); toCal.write();"
+				onChange="toCal.getFormValue(); toCal.hide();"
+				value="<c:out value="${ inputToDate }"/>" readonly size="8"><div id="toCal"></div>
+				<input type="submit" value="日時検索">
+			</form>
+		</div>
+		<div id="posts">
+			<c:forEach items="${ posts }" var="post" varStatus="status">
+				<div id="post">
+					<div id="postTitle"><c:out value="${ post.title }"/></div>
+					<div id="postText"><c:out escapeXml="fales" value="${ post.text }"/> </div>
+					<div id="postDate"><c:out value="${ post.createdDateString }"/></div>
+					<div id="postName"><c:out value="${ post.userName }"/></div>
+					<div id="comments">
+						<label>コメント欄</label>
+						<c:forEach items="${ post.comments }" var="comment">
+							<div id="comment">
+								<div id="commentText"><c:out escapeXml="fales" value="${ comment.text }"/></div>
+								<div id="commentDate"><c:out value="${ comment.createdDateString }"/></div>
+								<div id="commentName"><c:out value="${ comment.userName }"/></div>
+							</div>
+						</c:forEach>
 						<div>
-							<c:if test="${ (loginUser.branchId == 1 && loginUser.departmentId == 2)  ||
-										   (loginUser.branchId == post.branchId && loginUser.departmentId <= post.departmentId) }">
-								<form action="deletePost" method="post">
-									<input type="hidden" name="post_id" value="<c:out value="${ post.id }"/>">
-									<input type="submit" value="削除">
-								</form>
-							</c:if>
-						</div>
-						<div>コメント欄</div>
-						<div id="comments">
-							<c:forEach items="${ post.comments }" var="comment">
-								<div>コメント者： <c:out value="${ comment.userName }"/> ＜＜ <c:out value="${ comment.text }"/> </div>
-								<div>コメント日時： <c:out value="${ comment.createdDateString }"/></div>
-								<div></div>
-							</c:forEach>
-						</div>
-						<div id="form">
 							<form action="registerComment" method="post">
-							<textarea name="mainText" cols=40 rows=4 ><c:out value="${ inputComments.text }"/></textarea>
+							<textarea name="mainText" cols=80 rows=10 ><c:if test="${ isErrorPost == post.id }"><c:out value="${ inputComments.text }"/></c:if></textarea>
 							<input type="submit" value="コメントする">
 							<input type="hidden" name="post_id" value="<c:out value="${ post.id }"/>">
 							</form>
-							<c:forEach items="${ violationMessages['_text'] }" var="message">
-								<c:out value="${ message }"/>
-							</c:forEach>
+							<c:if test="${ isErrorPost == post.id }">
+								<c:forEach items="${ violationMessages['_text'] }" var="message">
+									<div id="error"><c:out value="${ message }"/></div>
+								</c:forEach>
+							</c:if>
 						</div>
 					</div>
-				</c:forEach>
-			</div>
+					<div id="deleteButton">
+						<form action="deletePost" method="post">
+							<input type="hidden" name="post_id" value="<c:out value="${ post.id }"/>">
+							<input type="submit" value="この投稿を削除"
+							<c:choose>
+								<c:when test="${ (loginUser.branchId == 1 && loginUser.departmentId == 2) || (loginUser.branchId == post.branchId && loginUser.departmentId <= post.departmentId) }"></c:when>
+								<c:otherwise>disabled</c:otherwise>
+							</c:choose>
+							>
+						</form>
+					</div>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 </body>

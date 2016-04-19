@@ -34,7 +34,7 @@ public class CommentServlet extends BBSServlet{
 	private void register(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		Comments commentsBean = new Comments();
 		HttpSession session = request.getSession();
-		commentsBean.setText(lineSeparatorEncoder(request.getParameter("mainText")));
+		commentsBean.setText(request.getParameter("mainText"));
 		commentsBean.setPostId(Integer.parseInt(request.getParameter("post_id")));
 		Users userBean = (Users) session.getAttribute("loginUser");
 		commentsBean.setUserId(userBean.getId());
@@ -44,12 +44,15 @@ public class CommentServlet extends BBSServlet{
 		if(!violationMessages.isEmpty()){
 			PostService postService = new PostService();
 			request.setAttribute("violationMessages", violationMessages);
+			request.setAttribute("isErrorPost",commentsBean.getPostId());
 			request.setAttribute("inputComments", commentsBean);
 			request.setAttribute("posts", postService.getPosts());
 			request.setAttribute("categories", postService.getCategories());
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}else{
 			CommentService commentService = new CommentService();
+			//本文のエンコーダーはバリデーションの後に行う。
+			commentsBean.setText(lineSeparatorEncoder(commentsBean.getText()));
 			commentService.register(commentsBean);
 			response.sendRedirect("home");
 		}
