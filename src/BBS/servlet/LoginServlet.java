@@ -20,6 +20,7 @@ public class LoginServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
+
 		//ログイン画面が呼ばれたらログイン情報を削除する
 		request.getSession().removeAttribute("loginUser");
 		request.getRequestDispatcher("login.jsp").forward(request, response);

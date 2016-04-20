@@ -89,7 +89,7 @@ h1{padding: 1em;}
 #usersHeader{
 	display: table;
 	text-align: left;
-	width: 64%;
+	width: 96%;
 	margin: 5px;
 	padding: 5px;
 }
@@ -151,7 +151,6 @@ h1{padding: 1em;}
 #menu{
   margin: 0;
   padding: 0;
-  width: ***;
 }
 
 #menu ul{
@@ -187,7 +186,7 @@ h1{padding: 1em;}
 	text-align: left;
 	width: 100%;
 	margin: 0px;
-	padding: 5px 0px;
+	padding: 10px 0px;
 }
 
 #form div{
@@ -203,6 +202,22 @@ h1{padding: 1em;}
 	width:95px;
 	border: 1px solid #0099cc;
 }
+
+#count{
+	display:flex;
+}
+#count table{
+	margin: 0px 10px;
+	border: 1px solid #0099cc;
+	width: 150px;
+}
+#count td{
+	border: 1px solid #0099cc;
+}
+#count thead{
+	text-align:center;
+}
+
 
 #error{
 	padding:0px 3px;

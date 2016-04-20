@@ -60,6 +60,7 @@ function confirmSubmit(message,form){
 			<div id="usersHeader">
 				<div>ログインID</div>
 				<div>名称</div>
+				<div>操作</div>
 			</div>
 			 <c:forEach items="${ users }" var="user" varStatus="status">
 	 			<div id="user">

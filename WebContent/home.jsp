@@ -14,6 +14,35 @@
     function getSelect(text) {
     	document.getElementById('selectedCategory').value = text;
     }
+
+    function updatePostsByBranch(id) {
+    	update('/updatePostsByBranch',id);
+    }
+    function updatePostsByUser(id) {
+    	update('/updatePostsByUser',id);
+    }
+    function updateCommentsByBranch(id) {
+    	update('/updateCommentsByBranch',id);
+    }
+    function updateCommentsByUser(id) {
+    	update('/updatePostsByBranch',id);
+    }
+
+    function update(action,id){
+    	var form = document.createElement("FORM");
+    	form.action = action;
+    	form.method = "POST";
+
+    	var target_id = document.createElement("input");
+    	target_id.type = "text";
+    	target_id.name = "target_id";
+    	target_id.value = id;
+
+		form.appendChild(target_id);
+		form.submit();
+    }
+
+
 </script>
 <link rel="stylesheet" type="text/css" href="css/bbs.css">
 <title>掲示板システム</title>
@@ -25,7 +54,10 @@
 			<div id="menu">
 				<ul>
 					<li><a href="registerPost">新規投稿</a></li>
-					<li><a href="managementUser">ユーザー管理</a></li>
+					<c:choose>
+						<c:when test="${ (loginUser.departmentId != 3) }"><li><a>ユーザー管理</a></li></c:when>
+						<c:otherwise><li><a href="managementUser">ユーザー管理</a></li></c:otherwise>
+					</c:choose>
 					<li>　</li>
 					<li>　</li>
 					<li>　</li>
@@ -66,6 +98,80 @@
 				value="<c:out value="${ inputToDate }"/>" readonly size="8"><div id="toCal"></div>
 				<input type="submit" value="日時検索">
 			</form>
+		</div>
+		<div id="count">
+			<table>
+				<thead>
+					<tr><th colspan="2">支店別投稿数</th></tr>
+					<tr>
+						<th>支店名</th>
+						<th>投稿数</th>
+					</tr>
+				</thead>
+				<c:forEach items="${ post_by_branch }" var="count">
+					<tr onclick="updatePostsByBranch(${ count.id })">
+						<td><div><c:out value="${ count.name }"/></div></td>
+						<td>
+							<div><input name="id" type="hidden" value="${ count.id }"></div>
+							<div><c:out value="${ count.count }"/></div>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<table>
+				<thead>
+					<tr><th colspan="2">ユーザー別投稿数</th></tr>
+					<tr onclick="updatePostsByUser(${ count.id })">
+						<th>ユーザー名</th>
+						<th>投稿数</th>
+					</tr>
+				</thead>
+				<c:forEach items="${ post_by_user }" var="count">
+					<tr>
+						<td><div><c:out value="${ count.name }"/></div></td>
+						<td>
+							<div><c:out value="${ count.count }"/></div>
+							<div><input type="hidden" value="${ count.id }"></div>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<table>
+				<thead>
+					<tr><th colspan="2">支店別コメント数</th></tr>
+					<tr onclick="updateCommentsByBranch(${ count.id })">
+						<th>支店名</th>
+						<th>コメント数</th>
+					</tr>
+				</thead>
+				<c:forEach items="${ comment_by_branch }" var="count">
+					<tr>
+						<td><div><c:out value="${ count.name }"/></div></td>
+						<td>
+							<div><c:out value="${ count.count }"/></div>
+							<div><input type="hidden" value="${ count.id }"></div>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<table>
+				<thead>
+					<tr><th colspan="2">ユーザー別コメント数</th></tr>
+					<tr onclick="updateCommentsByUser(${ count.id })">
+						<th>ユーザー名</th>
+						<th>コメント数</th>
+					</tr>
+				</thead>
+				<c:forEach items="${ comment_by_user }" var="count">
+					<tr>
+						<td><div><c:out value="${ count.name }"/></div></td>
+						<td>
+							<div><c:out value="${ count.count }"/></div>
+							<div><input type="hidden" value="${ count.id }"></div>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
 		<div id="posts">
 			<c:forEach items="${ posts }" var="post" varStatus="status">

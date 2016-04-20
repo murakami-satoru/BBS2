@@ -29,7 +29,6 @@ public class PostsDao {
 				  + "CURRENT_TIMESTAMP ,"	//created_date
 				  + "CURRENT_TIMESTAMP )"	//updated_date
 				);
-
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
 			statement.setString(1, postsBean.getTitle());
 			statement.setString(2, postsBean.getText());
@@ -107,7 +106,6 @@ public class PostsDao {
 		}else{
 			sql.append(" <= ? order by id ");
 		}
-
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
 			statement.setString(1, date);
 			ResultSet results = statement.executeQuery();
@@ -154,15 +152,12 @@ public class PostsDao {
 				postsBean.setCreatedDate(results.getTimestamp("created_date"));
 				postsBean.setUpdatedDate(results.getTimestamp("updated_date"));
 				postsBean.setComments(commentsDao.select(connection, postsBean.getId()));
-
 				posts.add(postsBean);
 			}
-
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-
 		return posts;
 	}
 

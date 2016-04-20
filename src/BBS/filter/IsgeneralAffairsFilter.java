@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import BBS.beans.Users;
 
-@WebFilter(urlPatterns={"/*"})
-public class IsgeneralAffairsFilter implements Filter{
+@WebFilter(urlPatterns = {"/managementUser","/editUser","/registerUser"})
+public class IsGeneralAffairsFilter implements Filter{
 	@Override
 	public void destroy() {}
 
@@ -27,21 +27,20 @@ public class IsgeneralAffairsFilter implements Filter{
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpSession session = ((HttpServletRequest) request).getSession();
-		String servletpath = ((HttpServletRequest) request).getServletPath();
 
-		if(servletpath.indexOf("User") != -1 ){
-			Users usersBean = (Users) session.getAttribute("loginUser");
-			int departmentId = usersBean.getDepartmentId();
-			int branchId = usersBean.getBranchId();
-			//本社総務部以外がユーザー管理系の画面に遷移した場合にはじく
-			if(departmentId != 3 && branchId != 1){
-				List<String> messages = new ArrayList<String>();
-				messages.add("本社総務部以外は操作できません");
-				session.setAttribute("errorMessages", messages);
-				((HttpServletResponse) response).sendRedirect("home");
-				return;
-			}
+		Users usersBean = (Users) session.getAttribute("loginUser");
+
+		int departmentId = usersBean.getDepartmentId();
+		int branchId = usersBean.getBranchId();
+		//本社総務部以外がユーザー管理系の画面に遷移した場合にはじく
+		if(departmentId != 3 && branchId != 1){
+			List<String> messages = new ArrayList<String>();
+			messages.add("本社総務部以外は操作できません");
+			session.setAttribute("errorMessages", messages);
+			((HttpServletResponse) response).sendRedirect("home");
+			return;
 		}
+
 		chain.doFilter(request, response);
 	}
 
