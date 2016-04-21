@@ -9,6 +9,7 @@ import java.util.List;
 
 import BBS.beans.Posts;
 import BBS.beans.Users;
+import BBS.utils.BBSUtil;
 
 public class PostsDao {
 
@@ -83,11 +84,67 @@ public class PostsDao {
 		return posts;
 	}
 
+	public List<Posts> selectByBranch(Connection connection, int id){
+		List<Posts> posts = new ArrayList<Posts>();
+		String sql = "select * from view_posts where branch_id = ? order by id";
+		try(PreparedStatement statement = connection.prepareStatement(sql)){
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+	public List<Posts> selectByUser(Connection connection, int id){
+		List<Posts> posts = new ArrayList<Posts>();
+		String sql = "select * from view_posts where user_id = ? order by id";
+		try(PreparedStatement statement = connection.prepareStatement(sql)){
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+
+	public List<Posts> selectInCommentByBranch(Connection connection, int id){
+		List<Posts> posts = new ArrayList<Posts>();
+		String sql = "select * from view_posts where id in "
+					+ "(select distinct post_id from view_comments where branch_id = ?) order by id";
+		try(PreparedStatement statement = connection.prepareStatement(sql)){
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+	public List<Posts> selectInCommentByUser(Connection connection, int id){
+		List<Posts> posts = new ArrayList<Posts>();
+		String sql = "select * from view_posts where id in "
+				+ "(select distinct post_id from view_comments where user_id = ?) order by id";
+		try(PreparedStatement statement = connection.prepareStatement(sql)){
+			statement.setInt(1, id);
+			ResultSet results = statement.executeQuery();
+			posts = toPostsList(results,connection);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return posts;
+	}
+
 	public List<Posts> selectCategory(Connection connection, String category){
 		List<Posts> posts = new ArrayList<Posts>();
-		String sql = "select * from view_posts where category = ? order by id";
+		String sql = "select * from view_posts where category like ? order by id";
 		try(PreparedStatement statement = connection.prepareStatement(sql)){
-			statement.setString(1, category);
+			statement.setString(1, "%"+category+"%");
 			ResultSet results = statement.executeQuery();
 			posts = toPostsList(results,connection);
 		} catch (SQLException e) {
@@ -144,7 +201,7 @@ public class PostsDao {
 				postsBean.setUser(user);
 				postsBean.setId(results.getInt("id"));
 				postsBean.setTitle(results.getString("title"));
-				postsBean.setText(results.getString("text"));
+				postsBean.setText(BBSUtil.lineSeparatorEncoder(results.getString("text")));
 				postsBean.setCategory(results.getString("category"));
 				postsBean.setUserName(results.getString("user_name"));
 				postsBean.setBranchId(results.getInt("branch_id"));

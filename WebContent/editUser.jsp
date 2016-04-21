@@ -16,7 +16,7 @@
 				<ul>
 					<li><a href="managementUser">ユーザー管理</a></li>
 				</ul>
-				<div id="error">
+				<div class="error">
 					<c:if test="${ not empty errorMessages }">
 						<c:forEach items="${ errorMessages }" var="message">
 							<c:out value="${ message }"/>
@@ -33,24 +33,24 @@
 					<input type="text" name="login_id"  size="20" maxlength="20"
 					value="<c:out value="${ user.loginId }"/>">
 					<c:forEach items="${ violationMessages['_loginId'] }" var="message">
-						<c:out value="${ message }"/>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
 					<label>パスワード:</label>
 					<input type="password" name="password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_password'] }" var="message">
-						<c:out value="${ message }"/>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
 					<label>確認用パスワード:</label>
 					<input type="password" name="confirmation_password"  size="20" maxlength="255">
 					<c:forEach items="${ violationMessages['_confirmationPassword'] }" var="message">
-						<c:out value="${ message }"/>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 					<c:forEach items="${ messages }" var="message">
-						<c:out value="${ message }"/>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
@@ -58,7 +58,7 @@
 					<input type="text" name="name"  size="10" maxlength="10"
 					value="<c:out value="${ user.name }"/>">
 					<c:forEach items="${ violationMessages['_name'] }" var="message">
-						<c:out value="${ message }"/>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
@@ -83,6 +83,7 @@
 				</div>
 				<div>
 					<input type="hidden" name="id" value="<c:out value="${ user.id }"/>">
+					<input type="hidden" name="updated_date" value="<c:out value="${ user.updatedDate }"/>">
 					<input type="submit" value="更新">
 				</div>
 			</form>

@@ -24,9 +24,10 @@ public class LoginCheckFilter implements Filter{
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpSession session = ((HttpServletRequest) request).getSession();
+		String servletPath = ((HttpServletRequest) request).getServletPath();
 
 		//ログインをせずに他画面が呼ばれればログイン画面に戻す。
-		if(session.getAttribute("loginUser") == null){
+		if(session.getAttribute("loginUser") == null && servletPath.indexOf("login") == -1){
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインしてください");
 			session.setAttribute("errorMessages", messages);

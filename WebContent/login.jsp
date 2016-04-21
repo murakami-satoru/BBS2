@@ -12,15 +12,13 @@
 	<div id="wrapper">
 		<div id="header">
 			<h1>掲示板システム</h1>
-			<div id="menu">
-				<div id="error">
-					<c:if test="${ not empty errorMessages }">
-						<c:forEach items="${ errorMessages }" var="message">
-							<c:out value="${ message }"/>
-						</c:forEach>
-						<c:remove var="errorMessages" scope="session"/>
-					</c:if>
-				</div>
+			<div class="error">
+				<c:if test="${ not empty errorMessages }">
+					<c:forEach items="${ errorMessages }" var="message">
+						<c:out value="${ message }"/>
+					</c:forEach>
+					<c:remove var="errorMessages" scope="session"/>
+				</c:if>
 			</div>
 		</div>
 		<div id="form">

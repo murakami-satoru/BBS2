@@ -15,23 +15,23 @@
     	document.getElementById('selectedCategory').value = text;
     }
 
-    function updatePostsByBranch(id) {
-    	update('/updatePostsByBranch',id);
+    function selectPostsByBranch(id) {
+    	select('selectPostsByBranch',id);
     }
-    function updatePostsByUser(id) {
-    	update('/updatePostsByUser',id);
+    function selectPostsByUser(id) {
+    	select('selectPostsByUser',id);
     }
-    function updateCommentsByBranch(id) {
-    	update('/updateCommentsByBranch',id);
+    function selectCommentsByBranch(id) {
+    	select('selectCommentsByBranch',id);
     }
-    function updateCommentsByUser(id) {
-    	update('/updatePostsByBranch',id);
+    function selectCommentsByUser(id) {
+    	select('selectCommentsByUser',id);
     }
 
-    function update(action,id){
+    function select(action,id){
     	var form = document.createElement("FORM");
     	form.action = action;
-    	form.method = "POST";
+    	form.method = "post";
 
     	var target_id = document.createElement("input");
     	target_id.type = "text";
@@ -64,10 +64,10 @@
 					<li>　</li>
 					<li><a href="logout">ログアウト</a></li>
 				</ul>
-				<div id="error">
+				<div class="error">
 					<c:if test="${ not empty errorMessages }">
 						<c:forEach items="${ errorMessages }" var="message">
-							<div id="error"><c:out value="${ message }"/></div>
+							<div class="error"><c:out value="${ message }"/></div>
 						</c:forEach>
 						<c:remove var="errorMessages" scope="session"/>
 					</c:if>
@@ -98,6 +98,9 @@
 				value="<c:out value="${ inputToDate }"/>" readonly size="8"><div id="toCal"></div>
 				<input type="submit" value="日時検索">
 			</form>
+			<form id="search_date" action="getAll" method="post">
+				<input type="submit" value="すべて表示">
+			</form>
 		</div>
 		<div id="count">
 			<table>
@@ -109,7 +112,7 @@
 					</tr>
 				</thead>
 				<c:forEach items="${ post_by_branch }" var="count">
-					<tr onclick="updatePostsByBranch(${ count.id })">
+					<tr onclick="selectPostsByBranch(${ count.id })">
 						<td><div><c:out value="${ count.name }"/></div></td>
 						<td>
 							<div><input name="id" type="hidden" value="${ count.id }"></div>
@@ -121,13 +124,13 @@
 			<table>
 				<thead>
 					<tr><th colspan="2">ユーザー別投稿数</th></tr>
-					<tr onclick="updatePostsByUser(${ count.id })">
+					<tr>
 						<th>ユーザー名</th>
 						<th>投稿数</th>
 					</tr>
 				</thead>
 				<c:forEach items="${ post_by_user }" var="count">
-					<tr>
+					<tr onclick="selectPostsByUser(${ count.id })">
 						<td><div><c:out value="${ count.name }"/></div></td>
 						<td>
 							<div><c:out value="${ count.count }"/></div>
@@ -139,13 +142,13 @@
 			<table>
 				<thead>
 					<tr><th colspan="2">支店別コメント数</th></tr>
-					<tr onclick="updateCommentsByBranch(${ count.id })">
+					<tr>
 						<th>支店名</th>
 						<th>コメント数</th>
 					</tr>
 				</thead>
 				<c:forEach items="${ comment_by_branch }" var="count">
-					<tr>
+					<tr onclick="selectCommentsByBranch(${ count.id })">
 						<td><div><c:out value="${ count.name }"/></div></td>
 						<td>
 							<div><c:out value="${ count.count }"/></div>
@@ -157,13 +160,13 @@
 			<table>
 				<thead>
 					<tr><th colspan="2">ユーザー別コメント数</th></tr>
-					<tr onclick="updateCommentsByUser(${ count.id })">
+					<tr>
 						<th>ユーザー名</th>
 						<th>コメント数</th>
 					</tr>
 				</thead>
 				<c:forEach items="${ comment_by_user }" var="count">
-					<tr>
+					<tr onclick="selectCommentsByUser(${ count.id })">
 						<td><div><c:out value="${ count.name }"/></div></td>
 						<td>
 							<div><c:out value="${ count.count }"/></div>
@@ -197,7 +200,7 @@
 							</form>
 							<c:if test="${ isErrorPost == post.id }">
 								<c:forEach items="${ violationMessages['_text'] }" var="message">
-									<div id="error"><c:out value="${ message }"/></div>
+									<div class="error"><c:out value="${ message }"/></div>
 								</c:forEach>
 							</c:if>
 						</div>

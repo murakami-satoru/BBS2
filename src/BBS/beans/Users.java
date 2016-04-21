@@ -8,8 +8,11 @@ public class Users {
 	private String _confirmationPassword;
 	private String _name;
 	private int _branchId;
+	private String _branchName;
 	private int _departmentId;
+	private String _departmentName;
 	private int _isLocked;
+	private String _updatedDate;
 
 	//User.idのセッター・ゲッター
 	public void setId(int id){
@@ -58,6 +61,14 @@ public class Users {
 		return _branchId;
 	}
 
+	//User.branch_idに紐づくBranches.nameのセッター・ゲッター
+	public void setBranchName(String branchName){
+		_branchName = branchName;
+	}
+	public String getBranchName(){
+		return _branchName;
+	}
+
 	//User.department_idのセッター・ゲッター
 	public void setDepartmentId(int departmentId){
 		_departmentId = departmentId;
@@ -66,11 +77,27 @@ public class Users {
 		return _departmentId;
 	}
 
+	//User.department_idに紐づくDepartments.nameのセッター・ゲッター
+	public void setDepartmentName(String departmentName){
+		_departmentName = departmentName;
+	}
+	public String getDepartmentName(){
+		return _departmentName;
+	}
+
 	//User.is_lockedのセッター・ゲッター
 	public void setIsLocked(int isLocked){
 		_isLocked = isLocked;
 	}
 	public int getIsLocked(){
 		return _isLocked;
+	}
+
+	//Users.updated_dateのセッター・ゲッター
+	public void setUpdatedDate(String updatedDate){
+		_updatedDate = updatedDate;
+	}
+	public String getUpdatedDate(){
+		return _updatedDate;
 	}
 }

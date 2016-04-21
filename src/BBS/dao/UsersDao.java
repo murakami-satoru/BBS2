@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BBS.beans.Users;
+import BBS.utils.BBSUtil;
 
 public class UsersDao {
 
 	public Users login(Connection connection, String loginId, String password){
 		//アカウント停止していたらログインできない。
-		String sql = "select * from users where is_locked = 0 and login_id = ? and password = ?";
+		String sql = "select * from view_users where is_locked = 0 and login_id = ? and password = ?";
 		try(PreparedStatement statement = connection.prepareStatement(sql)){
 			statement.setString(1, loginId);
 			statement.setString(2, password);
@@ -33,7 +34,7 @@ public class UsersDao {
 	}
 
 	public Users getUser(Connection connection, int id){
-		String sql = "select * from users where id = ?";
+		String sql = "select * from view_users where user_id = ?";
 		try(PreparedStatement statement = connection.prepareStatement(sql)){
 			statement.setInt(1, id);
 			ResultSet results = statement.executeQuery();
@@ -51,13 +52,17 @@ public class UsersDao {
 				  + "password ,"
 				  + "name ,"
 				  + "branch_id ,"
-				  + "department_id"
+				  + "department_id ,"
+				  + "created_date ,"
+				  + "updates_date ,"
 				  + " ) values ( "
 				  + "? ,"	//login_id
 				  + "? ,"	//password
 				  + "? ,"	//name
 				  + "? ,"	//branch_id
-				  + "? )"	//department_id
+				  + "? ,"	//department_id
+				  + "CURRENT_TIMESTAMP ,"	//created_date
+				  + "CURRENT_TIMESTAMP )"	//updated_date)"
 				);
 
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
@@ -73,19 +78,21 @@ public class UsersDao {
 			e.printStackTrace();
 		}
 	}
-	public void update(Connection connection,Users users){
+	public int update(Connection connection,Users users){
 		StringBuilder sql = new StringBuilder();
 		sql.append("update users set "
 				 + "  login_id = ? "
 				 + ", name = ? "
 				 + ", branch_id = ? "
-				 + ", department_id = ? ");
+				 + ", department_id = ? "
+				 );
 		//passwordが入力されていれば更新
 		boolean isPassword = users.getPassword().equals("");
 		if(!isPassword){
 			sql.append(", password = ? ");
 		}
-		sql.append(" where id = ? ");
+		sql.append(", updated_date = CURRENT_TIMESTAMP ");
+		sql.append(" where id = ? and updated_date = ?");
 		try(PreparedStatement statement = connection.prepareStatement(sql.toString())){
 			statement.setString(1, users.getLoginId());
 			statement.setString(2, users.getName());
@@ -94,15 +101,19 @@ public class UsersDao {
 			int parameterIndex = 5;
 			//passwordが入力されていれば更新
 			if(!isPassword){
-				statement.setString(parameterIndex, users.getPassword());
-				parameterIndex++;
+				//パスワードの暗号化
+				users.setPassword( BBSUtil.encrypt(users.getPassword()));
+				statement.setString(parameterIndex++, users.getPassword());
 			}
-			statement.setInt(parameterIndex, users.getId());
-			statement.executeUpdate();
+			statement.setInt(parameterIndex++, users.getId());
+			statement.setString(parameterIndex++,users.getUpdatedDate());
+			return statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+
+		return 0;
 	}
 
 	public void managementUser(Connection connection,Users users){
@@ -131,7 +142,7 @@ public class UsersDao {
 
 	public List<Users> selectAll(Connection connection){
 		List<Users> users = new ArrayList<Users>();
-		String sql = "select * from users order by id";
+		String sql = "select * from view_users order by user_id";
 
 		try(ResultSet result = connection.prepareStatement(sql).executeQuery();){
 			users = toUsersList(result);
@@ -147,14 +158,16 @@ public class UsersDao {
 		try{
 			while(results.next()){
 				Users usersBean = new Users();
-				usersBean.setId(results.getInt("id"));
+				usersBean.setId(results.getInt("user_id"));
 				usersBean.setLoginId(results.getString("login_id"));
 				usersBean.setPassword(results.getString("password"));
-				usersBean.setName(results.getString("name"));
+				usersBean.setName(results.getString("user_name"));
 				usersBean.setBranchId(results.getInt("branch_id"));
+				usersBean.setBranchName(results.getString("branch_name"));
 				usersBean.setDepartmentId(results.getInt("department_id"));
+				usersBean.setDepartmentName(results.getString("department_name"));
 				usersBean.setIsLocked(results.getInt("is_locked"));
-
+				usersBean.setUpdatedDate(results.getString("updated_date"));
 				users.add(usersBean);
 			}
 		} catch (SQLException e) {

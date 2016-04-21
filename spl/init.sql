@@ -19,6 +19,8 @@ create table users(
 	branch_id		integer			not null,
 	department_id	integer			not null,
 	is_locked		integer			default 0
+	created_date timestamp		,
+	updated_date timestamp
 );
 
 drop table if exists posts;

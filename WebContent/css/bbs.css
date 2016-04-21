@@ -22,7 +22,7 @@ color: #ffffff;
 }
 
 
-h1{padding: 1em;}
+h1{padding: 0.5em;}
 
 
 #deleteButton{
@@ -62,53 +62,32 @@ h1{padding: 1em;}
     padding: 10px 0px;
 }
 
-#users{
+#users table{
 	display: table;
-	text-align: left;
-	width: 96%;
-	margin: 5px;
-	padding: 5px;
-}
-#user{
-	display: table;
-	text-align: left;
+	text-align: center;
 	width: 96%;
 	margin: 5px;
 	padding: 5px;
 }
 
-#user div{
-	display:table-cell;
+#users th{
+	text-align: center;
 	border: 1px solid #0099cc;
-	width:30%;
-	margin: 5px;
-	padding: 5px;
-	text-align:center;
 }
-
-#usersHeader{
-	display: table;
-	text-align: left;
-	width: 96%;
-	margin: 5px;
-	padding: 5px;
-}
-
-#usersHeader div{
-	display:table-cell;
+#users td{
+	text-align: center;
 	border: 1px solid #0099cc;
-	width:30%;
-	margin: 5px;
-	padding: 5px;
-	text-align:center;
 }
 
 #editButton{
+	margin-left:-20px;
 	margin-right:20px;
 }
 #lockButton{
 	margin-left:20px;
+	margin-right:-20px;
 }
+
 #posts{
 	display: block;
 	text-align: left;
@@ -219,9 +198,9 @@ h1{padding: 1em;}
 }
 
 
-#error{
-	padding:0px 3px;
+.error{
 	font-size: 120%;
-	display: table;
+	text-align: center;
 	color: red;
+    font-weight: bold;
 }

@@ -37,51 +37,57 @@ function confirmSubmit(message,form){
 	<div id="wrapper">
 		<div id="header">
 			<h1>ユーザー管理画面</h1>
+			<div class="error">
+				<c:if test="${ not empty errorMessages }">
+					<div class="errorMessages">
+						<c:forEach items="${ errorMessages }" var="message">
+							<c:out value="${ message }"/>
+						</c:forEach>
+					</div>
+					<c:remove var="errorMessages" scope="session"/>
+				</c:if>
+			</div>
 			<div id="menu">
 				<ul>
 					<li><a href="registerUser">ユーザー新規登録</a></li>
 					<li><a href="home">ホーム</a></li>
 				</ul>
 			</div>
-			<div id="error">
-				<c:if test="${ not empty errorMessages }">
-					<div class="errorMessages">
-						<ul>
-							<c:forEach items="${ errorMessages }" var="message">
-								<li><c:out value="${ message }"/></li>
-							</c:forEach>
-						</ul>
-					</div>
-					<c:remove var="errorMessages" scope="session"/>
-				</c:if>
-			</div>
 		</div>
 		<div id="users">
-			<div id="usersHeader">
-				<div>ログインID</div>
-				<div>名称</div>
-				<div>操作</div>
-			</div>
-			 <c:forEach items="${ users }" var="user" varStatus="status">
-	 			<div id="user">
-					<div><c:out value="${ user.loginId }"/></div>
-					<div><c:out value="${ user.name }"/></div>
-					<div>
-						<form name="forButton${ status.index }" action="" method="post">
-							<input type="hidden" name="id" value="${ user.id }" >
-							<input type="button" name="edit" id="editButton" value="編集" onClick="func(this.name,this.form)">
-							<c:choose>
-								<c:when test="${ user.isLocked == 0 }">
-									<input type="button" name="stop" id="lockButton" value="停止" onClick="func(this.name,this.form)">
-								</c:when>
-								<c:when test="${ user.isLocked == 1 }">
-									<input type="button" name="resurrect" id="lockButton" value="復活" onClick="func(this.name,this.form)">
-								</c:when>
-							</c:choose>
-						</form>
-					</div>
-				</div>
-			</c:forEach>
+			<table>
+				<thead>
+					<tr>
+						<th>ログインID</th>
+						<th>名称</th>
+						<th>所属支店名</th>
+						<th>所属部署名</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				 <c:forEach items="${ users }" var="user" varStatus="status">
+		 			<tr>
+						<td><c:out value="${ user.loginId }"/></td>
+						<td><c:out value="${ user.name }"/></td>
+						<td><c:out value="${ user.branchName }"/></td>
+						<td><c:out value="${ user.departmentName }"/></td>
+						<td>
+							<form name="forButton${ status.index }" action="" method="post">
+								<input type="hidden" name="id" value="${ user.id }" >
+								<input type="button" name="edit" id="editButton" value="編集" onClick="func(this.name,this.form)">
+								<c:choose>
+									<c:when test="${ user.isLocked == 0 }">
+										<input type="button" name="stop" id="lockButton" value="停止" onClick="func(this.name,this.form)">
+									</c:when>
+									<c:when test="${ user.isLocked == 1 }">
+										<input type="button" name="resurrect" id="lockButton" value="復活" onClick="func(this.name,this.form)">
+									</c:when>
+								</c:choose>
+							</form>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
 	</div>
 </body>

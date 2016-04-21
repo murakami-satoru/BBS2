@@ -6,7 +6,7 @@ import java.util.List;
 
 import BBS.beans.Users;
 import BBS.dao.UsersDao;
-import BBS.utils.CipherUtil;
+import BBS.utils.BBSUtil;
 import BBS.utils.DBUtil;
 
 public class UserService {
@@ -15,7 +15,7 @@ public class UserService {
 		Connection connection = DBUtil.getConnection();
 		UsersDao usersDao = new UsersDao();
 		try{
-			usersBean.setPassword( CipherUtil.encrypt(usersBean.getPassword()));
+			usersBean.setPassword( BBSUtil.encrypt(usersBean.getPassword()));
 			usersDao.insert(connection, usersBean);
 			DBUtil.commit(connection);
 		}catch(RuntimeException | Error e){
@@ -25,12 +25,12 @@ public class UserService {
 			DBUtil.close(connection);
 		}
 	}
-	public void update(Users usersBean){
+	public int update(Users usersBean){
 		Connection connection = DBUtil.getConnection();
 		UsersDao usersDao = new UsersDao();
+		int updateLine;
 		try{
-			usersBean.setPassword( CipherUtil.encrypt(usersBean.getPassword()));
-			usersDao.update(connection, usersBean);
+			updateLine = usersDao.update(connection, usersBean);
 			DBUtil.commit(connection);
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);
@@ -38,6 +38,8 @@ public class UserService {
 		} finally {
 			DBUtil.close(connection);
 		}
+
+		return updateLine;
 	}
 
 	public void managementUser(Users usersBean){
@@ -57,7 +59,7 @@ public class UserService {
 	public Users login(String loginId,String password){
 		Connection connection = DBUtil.getConnection();
 		try{
-			return new UsersDao().login(connection, loginId, CipherUtil.encrypt(password));
+			return new UsersDao().login(connection, loginId, BBSUtil.encrypt(password));
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);
 			throw e;

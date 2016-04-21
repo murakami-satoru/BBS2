@@ -21,7 +21,7 @@
 				<ul>
 					<li><a href="home">ホーム</a></li>
 				</ul>
-				<div id="error">
+				<div class="error">
 					<c:if test="${ not empty errorMessages }">
 						<c:forEach items="${ errorMessages }" var="message">
 							<c:out value="${ message }"/>
@@ -38,14 +38,14 @@
 					<input type="text" name="title"  size="20" maxlength="50"
 					value="<c:out value="${ inputPosts.title }"/>">
 					<c:forEach items="${ violationMessages['_title'] }" var="message">
-						<div id="error"><c:out value="${ message }"/></div>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
 					<label>投稿内容:</label>
 					<textarea name="mainText" cols=50 rows=10 ><c:out value="${ inputPosts.text }"/></textarea>
 					<c:forEach items="${ violationMessages['_text'] }" var="message">
-						<div id="error"><c:out value="${ message }"/></div>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>
@@ -53,7 +53,7 @@
 					<input type="text" name="category" id="selectedCategory" size="20" maxlength="10"
 					value="<c:out value="${ inputPosts.category }"/>">
 					<c:forEach items="${ violationMessages['_category'] }" var="message">
-						<div id="error"><c:out value="${ message }"/></div>
+						<div class="error"><c:out value="${ message }"/></div>
 					</c:forEach>
 				</div>
 				<div>

@@ -69,7 +69,7 @@ public class PostService {
 		return categories;
 	}
 
-	public List<Posts> selectCategory(String category){
+	public List<Posts> getByCategory(String category){
 		Connection connection = DBUtil.getConnection();
 		PostsDao postsDao = new PostsDao();
 		List<Posts> posts = new ArrayList<Posts>();
@@ -86,7 +86,7 @@ public class PostService {
 		return posts;
 	}
 
-	public List<Posts> selectDate(String date,boolean isFrom){
+	public List<Posts> getByDate(String date,boolean isFrom){
 		Connection connection = DBUtil.getConnection();
 		PostsDao postsDao = new PostsDao();
 		List<Posts> posts = new ArrayList<Posts>();
@@ -102,12 +102,77 @@ public class PostService {
 
 		return posts;
 	}
-	public List<Posts> selectDate(String fromDate,String toDate){
+	public List<Posts> getByDate(String fromDate,String toDate){
 		Connection connection = DBUtil.getConnection();
 		PostsDao postsDao = new PostsDao();
 		List<Posts> posts = new ArrayList<Posts>();
 		try{
 			posts = postsDao.selectDate(connection, fromDate, toDate);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+
+		return posts;
+	}
+
+	public List<Posts> getByBranch(int id){
+		Connection connection = DBUtil.getConnection();
+		PostsDao postsDao = new PostsDao();
+		List<Posts> posts = new ArrayList<Posts>();
+		try{
+			posts = postsDao.selectByBranch(connection, id);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+
+		return posts;
+	}
+	public List<Posts> getByUser(int id){
+		Connection connection = DBUtil.getConnection();
+		PostsDao postsDao = new PostsDao();
+		List<Posts> posts = new ArrayList<Posts>();
+		try{
+			posts = postsDao.selectByUser(connection, id);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+
+		return posts;
+	}
+	public List<Posts> getInCommentByBranch(int id){
+		Connection connection = DBUtil.getConnection();
+		PostsDao postsDao = new PostsDao();
+		List<Posts> posts = new ArrayList<Posts>();
+		try{
+			posts = postsDao.selectInCommentByBranch(connection, id);
+			DBUtil.commit(connection);
+		}catch(RuntimeException | Error e){
+			DBUtil.rollback(connection);
+			throw e;
+		} finally {
+			DBUtil.close(connection);
+		}
+
+		return posts;
+	}
+	public List<Posts> getInCommentByUser(int id){
+		Connection connection = DBUtil.getConnection();
+		PostsDao postsDao = new PostsDao();
+		List<Posts> posts = new ArrayList<Posts>();
+		try{
+			posts = postsDao.selectInCommentByUser(connection, id);
 			DBUtil.commit(connection);
 		}catch(RuntimeException | Error e){
 			DBUtil.rollback(connection);

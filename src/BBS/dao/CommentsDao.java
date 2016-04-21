@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BBS.beans.Comments;
+import BBS.utils.BBSUtil;
 
 public class CommentsDao {
 
@@ -84,7 +85,7 @@ public class CommentsDao {
 			while(results.next()){
 				Comments commentsBean = new Comments();
 				commentsBean.setId(results.getInt("id"));
-				commentsBean.setText(results.getString("text"));
+				commentsBean.setText(BBSUtil.lineSeparatorEncoder(results.getString("text")));
 				commentsBean.setUserName(results.getString("user_name"));
 				commentsBean.setCreatedDate(results.getTimestamp("created_date"));
 				commentsBean.setUpdatedDate(results.getTimestamp("updated_date"));

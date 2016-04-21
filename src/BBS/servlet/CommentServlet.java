@@ -47,12 +47,10 @@ public class CommentServlet extends BBSServlet{
 			request.setAttribute("isErrorPost",commentsBean.getPostId());
 			request.setAttribute("inputComments", commentsBean);
 			request.setAttribute("posts", postService.getPosts());
-			request.setAttribute("categories", postService.getCategories());
-			request.getRequestDispatcher("home.jsp").forward(request, response);
+			dispatcherHome(request, response);
 		}else{
 			CommentService commentService = new CommentService();
-			//本文のエンコーダーはバリデーションの後に行う。
-			commentsBean.setText(lineSeparatorEncoder(commentsBean.getText()));
+			commentsBean.setText(commentsBean.getText());
 			commentService.register(commentsBean);
 			response.sendRedirect("home");
 		}

@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class CipherUtil {
+public class BBSUtil {
 	public static String encrypt(String target){
 		try{
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -14,5 +14,12 @@ public class CipherUtil {
 		} catch (NoSuchAlgorithmException e){
 			throw new RuntimeException(e);
 		}
+	}
+
+	//改行コードを<br>に変換
+	public static String lineSeparatorEncoder(String traget){
+		String decode;
+		decode = traget.replaceAll(System.lineSeparator(), "<br>");
+		return decode;
 	}
 }

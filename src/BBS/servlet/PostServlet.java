@@ -16,7 +16,7 @@ import BBS.beans.Users;
 import BBS.service.PostService;
 import BBS.validation.RegisterPostForm;
 
-@WebServlet(urlPatterns= { "/registerPost","/deletePost","/searchCategory","/searchDate" })
+@WebServlet(urlPatterns= { "/registerPost","/deletePost","/searchCategory","/searchDate","/getAll" })
 public class PostServlet extends BBSServlet{
 	private static final long serialVersionUID = 1L;
 
@@ -34,6 +34,9 @@ public class PostServlet extends BBSServlet{
 			searchCategory(request, response);
 		}else if(request.getServletPath().indexOf("/searchDate") != -1){
 			searchDate(request, response);
+		}else if(request.getServletPath().indexOf("/getAll") != -1){
+			request.setAttribute("posts", new PostService().getPosts());
+			dispatcherHome(request, response);
 		}
 	}
 
@@ -52,11 +55,11 @@ public class PostServlet extends BBSServlet{
 		if(!violationMessages.isEmpty()){
 			request.setAttribute("violationMessages", violationMessages);
 			request.setAttribute("inputPosts", postsBean);
+			request.setAttribute("categories", new PostService().getCategories());
 			request.getRequestDispatcher("registerPost.jsp").forward(request, response);
 		}else{
 			PostService postService = new PostService();
-			//本文のエンコーダーはバリデーションの後に行う。
-			postsBean.setText(lineSeparatorEncoder(postsBean.getText()));
+			postsBean.setText(postsBean.getText());
 			postService.register(postsBean);
 			response.sendRedirect("home");
 		}
@@ -73,11 +76,9 @@ public class PostServlet extends BBSServlet{
 	private void searchCategory(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		PostService postService = new PostService();
 		String category = request.getParameter("category");
-		request.setAttribute("posts", postService.selectCategory(category));
-		request.setAttribute("categories", postService.getCategories());
+		request.setAttribute("posts", postService.getByCategory(category));
 		request.setAttribute("inputCategory", category);
-
-		request.getRequestDispatcher("home.jsp").forward(request, response);
+		dispatcherHome(request, response);
 	}
 	private void searchDate(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		PostService postService = new PostService();
@@ -90,18 +91,19 @@ public class PostServlet extends BBSServlet{
 		String timeFormattoDate = toDate + " 23:59:59";
 
 		if(!toDate.isEmpty() && !fromDate.isEmpty()){
-			posts = postService.selectDate(timeFormatFromDate,timeFormattoDate);
+			posts = postService.getByDate(timeFormatFromDate,timeFormattoDate);
 		}else if(!toDate.isEmpty()){
-			posts = postService.selectDate(timeFormattoDate,false);
+			posts = postService.getByDate(timeFormattoDate,false);
 		}else if(!fromDate.isEmpty()){
-			posts = postService.selectDate(timeFormatFromDate, true);
+			posts = postService.getByDate(timeFormatFromDate, true);
+		}else{
+			posts = postService.getPosts();
 		}
 
 		request.setAttribute("posts", posts);
 		request.setAttribute("inputFromDate", fromDate);
 		request.setAttribute("inputToDate", toDate);
-		request.setAttribute("categories", postService.getCategories());
-		request.getRequestDispatcher("home.jsp").forward(request, response);
+		dispatcherHome(request, response);
 	}
 
 	private RegisterPostForm toRegisterPostForm(Posts postsBean){
